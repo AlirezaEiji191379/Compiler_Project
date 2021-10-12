@@ -3,11 +3,11 @@ from Scanner.Token import Token
 
 program = """if(b=3)
     {
-       a==3d;
-       4*/4
+       a==3;
+       c=4*4;
     }
     else{
-      b==4;
+      b==5;
     }
 """
 key_words = ("if", "else", "void", "int", "repeat", "break", "until", "return")
@@ -16,14 +16,14 @@ valid_chars = (
 
 symbol_table = list()
 error_list = list()
-
+star_comment_line = -1
 lineno = 1
 current_pointer = 0
 forward_pointer = 0
 current_state = 0
+size = len(program)
 
-
-####################################
+#########################################
 def start_state(c):
     global current_pointer
     global forward_pointer
@@ -40,7 +40,7 @@ def start_state(c):
         forward_pointer = forward_pointer + 1
         return 6
     elif c == "*":
-        forward_pointer = forward_pointer+1
+        forward_pointer = forward_pointer + 1
         return 8
     elif c == "/":
         forward_pointer = forward_pointer + 1
@@ -75,7 +75,7 @@ def state2():
     if not (str in symbol_table):
         symbol_table.append(str)
 
-    if token in key_words:
+    if str in key_words:
         token = Token("KEYWORD", str)
     else:
         token = Token("ID", str)
@@ -189,6 +189,8 @@ def state11(c):
 def state12():
     global current_pointer
     global forward_pointer
+    global star_comment_line
+    star_comment_line = -1
     forward_pointer = forward_pointer + 1
     current_pointer = forward_pointer
     return 0
@@ -198,10 +200,16 @@ def state12():
 def state13(c):
     global current_pointer
     global forward_pointer
+    global star_comment_line
+    global lineno
+    if star_comment_line == -1:
+        star_comment_line = lineno
     if c == "*":
         forward_pointer = forward_pointer + 1
         return 14
     else:
+        if c == "\n":
+            lineno = lineno + 1
         forward_pointer = forward_pointer + 1
         return 13
 
@@ -237,25 +245,22 @@ def error_state():
     global forward_pointer
     global current_pointer
     global program
-    print(program[current_pointer:forward_pointer+1])
-    forward_pointer = forward_pointer+1
+    print(program[current_pointer:forward_pointer + 1])
+    forward_pointer = forward_pointer + 1
     current_pointer = forward_pointer
     return 0
 
 
 def get_next_token():
-    compiler_token = None
     global current_pointer
     global forward_pointer
     global current_state
-    size = len(program)
     while True:
-        #print(current_state)
+        # print(current_state)
         if forward_pointer == size:
             return False
         if current_state == 0:
             current_state = start_state(program[forward_pointer])
-            #print(current_state)
 
         elif current_state == 1:
             current_state = state1(program[forward_pointer])
@@ -309,11 +314,7 @@ def get_next_token():
 
         elif current_state == -1:
             current_state = error_state()
-        #print(forward_pointer)
 
-
-# t = len(program)
-# print(t)
 
 while True:
     tokens = get_next_token()
@@ -322,5 +323,6 @@ while True:
     str = tokens.value + "---->" + tokens.token_kind
     print(str)
 
-#print(symbol_table)
-#print(lineno)
+if current_state == 13:
+    str = program[current_pointer:current_pointer + 7] + "..."
+    print(str)
