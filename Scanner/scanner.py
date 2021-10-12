@@ -1,15 +1,28 @@
 import re
+
+from Scanner.LexicalError import LexicalError
 from Scanner.Token import Token
 
+
 class Scanners:
-    program = """if(b=3)
-       {
-          a==3;
-          c=4*4;
-       }
-       else{
-          b==5;
-       }
+    program = """
+    void main ( void ) {
+    int a = 0;
+    // comment1
+    a = 2 + 2;
+    a = a - 3;
+    cde = a;
+    if (b /* comment2 */ == 3d) {
+        a = 3;
+        cd!e = 7;
+    }
+    else */
+    {
+        b = a < cde;
+        {cde = @2;
+    }}
+    return;/* comment 3
+}
     """
     key_words = ("if", "else", "void", "int", "repeat", "break", "until", "return")
     valid_chars = (
@@ -17,6 +30,7 @@ class Scanners:
 
     symbol_table = list()
     error_list = list()
+    tokens_list = list()
     star_comment_line = -1
     lineno = 1
     current_pointer = 0
@@ -26,7 +40,6 @@ class Scanners:
 
     def __init__(self):
         pass
-
 
     def start_state(self, c):
         if bool(re.match("[a-zA-z]", c)):
@@ -68,9 +81,9 @@ class Scanners:
             self.symbol_table.append(str)
 
         if str in self.key_words:
-            token = Token("KEYWORD", str)
+            token = Token("KEYWORD", str, self.lineno)
         else:
-            token = Token("ID", str)
+            token = Token("ID", str, self.lineno)
 
         self.current_pointer = self.forward_pointer
         return 0, token
@@ -86,7 +99,7 @@ class Scanners:
 
     def state4(self):
         str = self.program[self.current_pointer:self.forward_pointer]
-        token = Token("NUM", str)
+        token = Token("NUM", str, self.lineno)
         self.current_pointer = self.forward_pointer
         return 0, token
 
@@ -94,7 +107,7 @@ class Scanners:
         str = self.program[self.forward_pointer]
         self.forward_pointer = self.forward_pointer + 1
         self.current_pointer = self.forward_pointer
-        token = Token("SYMBOL", str)
+        token = Token("SYMBOL", str, self.lineno)
         return 0, token
 
     def state6(self, c):
@@ -109,7 +122,7 @@ class Scanners:
         self.forward_pointer = self.forward_pointer + 1
         str = self.program[self.current_pointer:self.forward_pointer]
         self.current_pointer = self.forward_pointer
-        token = Token("SYMBOL", str)
+        token = Token("SYMBOL", str, self.lineno)
         return 0, token
 
     def state8(self, c):
@@ -120,7 +133,7 @@ class Scanners:
 
     def state9(self):
         str = self.program[self.current_pointer:self.forward_pointer]
-        token = Token("SYMBOL", str)
+        token = Token("SYMBOL", str, self.lineno)
         self.current_pointer = self.forward_pointer
         return 0, token
 
@@ -177,14 +190,22 @@ class Scanners:
         return 0
 
     def error_state(self):
-        print(self.program[self.current_pointer:self.forward_pointer + 1])
+        str = self.program[self.current_pointer:self.forward_pointer + 1]
+        error = None
+        if bool(re.match("[0-9]",str)):
+            error = LexicalError(str, "invalid number", self.lineno)
+        elif str == "*/":
+            error = LexicalError(str, "unmatched comment", self.lineno)
+        else:
+            error = LexicalError(str, "invalid input", self.lineno)
+
+        self.error_list.append(error)
         self.forward_pointer = self.forward_pointer + 1
         self.current_pointer = self.forward_pointer
         return 0
 
     def get_next_token(self):
         while True:
-            # print(current_state)
             if self.forward_pointer == self.size:
                 return False
             if self.current_state == 0:
@@ -195,6 +216,7 @@ class Scanners:
 
             elif self.current_state == 2:
                 self.current_state, compiler_token = self.state2()
+                self.tokens_list.append(compiler_token)
                 return compiler_token
 
             elif self.current_state == 3:
@@ -202,10 +224,12 @@ class Scanners:
 
             elif self.current_state == 4:
                 self.current_state, compiler_token = self.state4()
+                self.tokens_list.append(compiler_token)
                 return compiler_token
 
             elif self.current_state == 5:
                 self.current_state, compiler_token = self.state5()
+                self.tokens_list.append(compiler_token)
                 return compiler_token
 
             elif self.current_state == 6:
@@ -213,6 +237,7 @@ class Scanners:
 
             elif self.current_state == 7:
                 self.current_state, compiler_token = self.state7()
+                self.tokens_list.append(compiler_token)
                 return compiler_token
 
             elif self.current_state == 8:
@@ -220,6 +245,7 @@ class Scanners:
 
             elif self.current_state == 9:
                 self.current_state, compiler_token = self.state9()
+                self.tokens_list.append(compiler_token)
                 return compiler_token
 
             elif self.current_state == 10:
