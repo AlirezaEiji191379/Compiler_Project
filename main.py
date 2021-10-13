@@ -4,6 +4,7 @@ from Scanner.scanner import Scanners
 f = open("input.txt", "r")
 inputFile = f.read()
 scanner = Scanners(inputFile)
+print(scanner.program)
 
 while True:
     tokens = scanner.get_next_token()
@@ -35,11 +36,17 @@ f.write(tokensFileContent)
 
 print()
 print("errors :")
+
 size = len(scanner.error_list)
 
+errorsFileContent = ''
 for i in range(size):
-    string = "{}. " + "({}" + "," + scanner.error_list[i].error_kind + ")"
-    print(string.format(scanner.error_list[i].lineno,scanner.error_list[i].error))
+    string = "{}.   " + "({}" + "," + scanner.error_list[i].error_kind + ")"
+    errorsFileContent += string.format(scanner.error_list[i].lineno,scanner.error_list[i].error) + '\n'
+
+print(errorsFileContent)
+f = open('lexical_errors.txt', 'w')
+f.write(errorsFileContent)
 
 print()
 print("symbol table")
