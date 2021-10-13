@@ -9,19 +9,29 @@ while True:
     tokens = scanner.get_next_token()
     if type(tokens) == bool:
         break
-    str = tokens.value + "---->" + tokens.token_kind
+    tokenValue_Kind = tokens.value + "---->" + tokens.token_kind
 
 if scanner.current_state == 13:
-    str = scanner.program[scanner.current_pointer:scanner.current_pointer + 7] + "..."
-    scanner.error_list.append(LexicalError(str, "unclosed comment", scanner.star_comment_line))
+    errorPart = scanner.program[scanner.current_pointer:scanner.current_pointer + 7] + "..."
+    scanner.error_list.append(LexicalError(errorPart, "unclosed comment", scanner.star_comment_line))
 
 print()
 print("tokens: ")
 size = len(scanner.tokens_list)
 
+currentLineNo = 0
+tokensFileContent = ''
+
 for i in range(size):
-    string = "{}. " + "({}," + scanner.tokens_list[i].token_kind + ")"
-    print(string.format(scanner.tokens_list[i].lineno,scanner.tokens_list[i].value))
+    if(currentLineNo != scanner.tokens_list[i].lineno):
+        currentLineNo = scanner.tokens_list[i].lineno
+        if(i!=0):tokensFileContent += '\n'
+        tokensFileContent += str(currentLineNo) + '.\t'
+    tokensFileContent += "(" + scanner.tokens_list[i].token_kind + ", " + scanner.tokens_list[i].value + ") "
+       
+print(tokensFileContent)
+f = open('tokens.txt', 'w')
+f.write(tokensFileContent)
 
 print()
 print("errors :")
