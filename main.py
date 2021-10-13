@@ -39,7 +39,7 @@ print("errors :")
 
 size = len(scanner.error_list)
 
-errorsFileContent = ''
+errorsFileContent = '' if size!=0 else 'There is no lexical error.' 
 for i in range(size):
     string = "{}.   " + "({}" + "," + scanner.error_list[i].error_kind + ")"
     errorsFileContent += string.format(scanner.error_list[i].lineno,scanner.error_list[i].error) + '\n'
@@ -52,7 +52,7 @@ print()
 print("symbol table")
 tableFileContent = ''
 for i in range(len(scanner.symbol_table)):
-    tableFileContent += str(i) + '.  ' + scanner.symbol_table[i] + '\n'
+    tableFileContent += str(i+1) + '.  ' + scanner.symbol_table[i] + '\n'
 print(tableFileContent)    
 f = open('symbol_table.txt', 'w')
 f.write(tableFileContent)
