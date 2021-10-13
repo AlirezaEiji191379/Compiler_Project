@@ -1,8 +1,9 @@
 from Scanner.LexicalError import LexicalError
 from Scanner.scanner import Scanners
 
-
-scanner = Scanners()
+f = open("input.txt", "r")
+inputFile = f.read()
+scanner = Scanners(inputFile)
 
 while True:
     tokens = scanner.get_next_token()

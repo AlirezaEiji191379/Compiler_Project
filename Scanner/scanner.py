@@ -5,25 +5,8 @@ from Scanner.Token import Token
 
 
 class Scanners:
-    program = """
-    void main ( void ) {
-    int a = 0;
-    // comment1
-    a = 2 + 2;
-    a = a - 3;
-    cde = a;
-    if (b /* comment2 */ == 3d) {
-        a = 3;
-        cd!e = 7;
-    }
-    else */
-    {
-        b = a < cde;
-        {cde = @2;
-    }}
-    return;/* comment 3
-}
-    """
+    program = """"""
+
     key_words = ("if", "else", "void", "int", "repeat", "break", "until", "return")
     valid_chars = (
         ";", ",", ":", "[", "]", "{", "}", "(", ")", "+", "-", "<", "=", "*", " ", "\n", "\t", "\r", "\f", "\v", "/")
@@ -36,9 +19,11 @@ class Scanners:
     current_pointer = 0
     forward_pointer = 0
     current_state = 0
-    size = len(program)
+    size = 0
 
-    def __init__(self):
+    def __init__(self, input):
+        self.program = input
+        self.size = len(input)
         pass
 
     def start_state(self, c):
