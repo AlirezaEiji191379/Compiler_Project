@@ -1,0 +1,10 @@
+0.  void
+1.  main
+2.  int
+3.  a
+4.  cde
+5.  if
+6.  b
+7.  e
+8.  else
+9.  return

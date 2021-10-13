@@ -50,4 +50,9 @@ f.write(errorsFileContent)
 
 print()
 print("symbol table")
-print(scanner.symbol_table)
+tableFileContent = ''
+for i in range(len(scanner.symbol_table)):
+    tableFileContent += str(i) + '.  ' + scanner.symbol_table[i] + '\n'
+print(tableFileContent)    
+f = open('symbol_table.txt', 'w')
+f.write(tableFileContent)
