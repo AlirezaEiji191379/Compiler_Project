@@ -21,8 +21,8 @@ size = len(scanner.tokens_list)
 
 currentLineNo = 0
 tokensFileContent = ''
-
-for i in range(size):
+ 
+for i in range(size) :
     if(currentLineNo != scanner.tokens_list[i].lineno):
         currentLineNo = scanner.tokens_list[i].lineno
         if(i!=0):tokensFileContent += '\n'
