@@ -1,1 +1,5 @@
-There is no lexical error.
+6.   (3d,invalid number)
+8.   (cd!,invalid input)
+10.   (*/,unmatched comment)
+13.   (@,invalid input)
+15.   (/* comm...,unclosed comment)

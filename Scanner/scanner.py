@@ -24,6 +24,7 @@ class Scanners:
     def __init__(self, input):
         self.program = input
         self.size = len(input)
+        self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return', 'main']
         pass
 
     def start_state(self, c):
