@@ -3,17 +3,16 @@ from Scanner.scanner import Scanners
 import re
 
 f = open("input.txt", "r")
-inputFile = f.read()
+inputFile = f.read() + " "
 scanner = Scanners(inputFile)
-print("program: ")
 
-print(scanner.program)
 
 while True:
     tokens = scanner.get_next_token()
     if type(tokens) == bool:
         break
     tokenValue_Kind = tokens.value + "---->" + tokens.token_kind
+    #print(tokenValue_Kind)
 
 if scanner.current_state == 13:
     errorPart = scanner.program[scanner.current_pointer:scanner.current_pointer + 7] + "..."
@@ -27,9 +26,9 @@ currentLineNo = 0
 tokensFileContent = ''
 
 for i in range(size):
-    if (currentLineNo != scanner.tokens_list[i].lineno):
+    if currentLineNo != scanner.tokens_list[i].lineno:
         currentLineNo = scanner.tokens_list[i].lineno
-        if (i != 0): tokensFileContent += '\n'
+        if i != 0: tokensFileContent += '\n'
         tokensFileContent += str(currentLineNo) + '.\t'
     tokensFileContent += "(" + scanner.tokens_list[i].token_kind + ", " + scanner.tokens_list[i].value + ") "
 
@@ -47,7 +46,7 @@ errorsFileContent = '' if size != 0 else 'There is no lexical error.'
 for i in range(size):
     if currentLineNo != scanner.error_list[i].lineno:
         currentLineNo = scanner.error_list[i].lineno
-        errorsFileContent += '\n'
+        if i!=0:errorsFileContent += '\n'
         errorsFileContent += str(currentLineNo) + '.\t'
     errorsFileContent += "(" + scanner.error_list[i].error + ", " + scanner.error_list[i].error_kind + ") "
 

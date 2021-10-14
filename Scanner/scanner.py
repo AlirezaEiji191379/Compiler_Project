@@ -23,6 +23,7 @@ class Scanners:
 
     def __init__(self, input):
         self.program = input
+        print(self.program)
         self.size = len(input)
         self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return']
         pass
@@ -63,17 +64,12 @@ class Scanners:
     def state2(self):
         str = self.program[self.current_pointer:self.forward_pointer]
         token = None
-        #if not (str in self.symbol_table):
-        #    self.symbol_table.append(str)
-
         if str in self.key_words:
             token = Token("KEYWORD", str, self.lineno)
-            #if not(str in self.key_word_table):
-            #    self.key_word_table.append(str)
 
         else:
             token = Token("ID", str, self.lineno)
-            if not(str in self.symbol_table):
+            if not (str in self.symbol_table):
                 self.symbol_table.append(str)
 
         self.current_pointer = self.forward_pointer
@@ -118,6 +114,8 @@ class Scanners:
 
     def state8(self, c):
         if c == "/":
+            return -1
+        elif not (c in self.valid_chars or bool(re.match("[0-9a-zA-Z]", c))):
             return -1
         else:
             return 9
@@ -200,6 +198,7 @@ class Scanners:
         while True:
             if self.forward_pointer == self.size:
                 return False
+
             if self.current_state == 0:
                 self.current_state = self.start_state(self.program[self.forward_pointer])
 
@@ -213,6 +212,8 @@ class Scanners:
 
             elif self.current_state == 3:
                 self.current_state = self.state3(self.program[self.forward_pointer])
+                # print(self.program[self.forward_pointer])
+
 
             elif self.current_state == 4:
                 self.current_state, compiler_token = self.state4()
