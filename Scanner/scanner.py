@@ -134,6 +134,8 @@ class Scanners:
             self.forward_pointer = self.forward_pointer + 1
             return 13
         else:
+            if c =="\n":
+                self.forward_pointer = self.forward_pointer -1
             return -1
 
     def state11(self, c):
