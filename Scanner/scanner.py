@@ -11,6 +11,8 @@ class Scanners:
     valid_chars = (
         ";", ",", ":", "[", "]", "{", "}", "(", ")", "+", "-", "<", "=", "*", " ", "\n", "\t", "\r", "\f", "\v", "/")
 
+    key_word_table = list()
+    id_table = list()
     symbol_table = list()
     error_list = list()
     tokens_list = list()
@@ -24,11 +26,11 @@ class Scanners:
     def __init__(self, input):
         self.program = input
         self.size = len(input)
-        self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return', 'main']
+        self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return']
         pass
 
     def start_state(self, c):
-        if bool(re.match("[a-zA-z]", c)):
+        if bool(re.match("[a-zA-Z]", c)):
             self.forward_pointer = self.forward_pointer + 1
             return 1
         elif bool(re.match("[0-9]", c)):
@@ -52,7 +54,7 @@ class Scanners:
             return -1
 
     def state1(self, c):
-        if bool(re.match("[a-zA-z0-9]", c)):
+        if bool(re.match("[a-zA-Z0-9]", c)):
             self.forward_pointer = self.forward_pointer + 1
             return 1
         elif c in self.valid_chars:
@@ -63,13 +65,18 @@ class Scanners:
     def state2(self):
         str = self.program[self.current_pointer:self.forward_pointer]
         token = None
-        if not (str in self.symbol_table):
-            self.symbol_table.append(str)
+        #if not (str in self.symbol_table):
+        #    self.symbol_table.append(str)
 
         if str in self.key_words:
             token = Token("KEYWORD", str, self.lineno)
+            #if not(str in self.key_word_table):
+            #    self.key_word_table.append(str)
+
         else:
             token = Token("ID", str, self.lineno)
+            if not(str in self.id_table):
+                self.symbol_table.append(str)
 
         self.current_pointer = self.forward_pointer
         return 0, token
@@ -99,7 +106,7 @@ class Scanners:
     def state6(self, c):
         if c == "=":
             return 7
-        elif c != "=" and (c in self.valid_chars or bool(re.match("[0-9a-zA-z]", c))):
+        elif c != "=" and (c in self.valid_chars or bool(re.match("[0-9a-zA-Z]", c))):
             return 9
         else:
             return -1
@@ -135,6 +142,7 @@ class Scanners:
 
     def state11(self, c):
         if c == "\n":
+            self.lineno = self.lineno + 1
             return 12
         else:
             self.forward_pointer = self.forward_pointer + 1
@@ -178,12 +186,12 @@ class Scanners:
     def error_state(self):
         str = self.program[self.current_pointer:self.forward_pointer + 1]
         error = None
-        if bool(re.match("[0-9]",str)):
-            error = LexicalError(str, "invalid number", self.lineno)
+        if bool(re.match("[0-9]", str)):
+            error = LexicalError(str, "Invalid number", self.lineno)
         elif str == "*/":
-            error = LexicalError(str, "unmatched comment", self.lineno)
+            error = LexicalError(str, "Unmatched comment", self.lineno)
         else:
-            error = LexicalError(str, "invalid input", self.lineno)
+            error = LexicalError(str, "Invalid input", self.lineno)
 
         self.error_list.append(error)
         self.forward_pointer = self.forward_pointer + 1

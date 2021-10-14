@@ -1,9 +1,12 @@
 from Scanner.LexicalError import LexicalError
 from Scanner.scanner import Scanners
+import re
 
 f = open("input.txt", "r")
 inputFile = f.read()
 scanner = Scanners(inputFile)
+print("program: ")
+
 print(scanner.program)
 
 while True:
@@ -14,7 +17,8 @@ while True:
 
 if scanner.current_state == 13:
     errorPart = scanner.program[scanner.current_pointer:scanner.current_pointer + 7] + "..."
-    scanner.error_list.append(LexicalError(errorPart, "unclosed comment", scanner.star_comment_line))
+    scanner.error_list.append(LexicalError(errorPart, "Unclosed comment", scanner.star_comment_line))
+
 
 print()
 print("tokens: ")
@@ -50,9 +54,13 @@ f.write(errorsFileContent)
 
 print()
 print("symbol table")
+
+
+
 tableFileContent = ''
 for i in range(len(scanner.symbol_table)):
     tableFileContent += str(i+1) + '.  ' + scanner.symbol_table[i] + '\n'
-print(tableFileContent)    
+print(tableFileContent)
 f = open('symbol_table.txt', 'w')
 f.write(tableFileContent)
+
