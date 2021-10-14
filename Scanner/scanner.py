@@ -11,8 +11,6 @@ class Scanners:
     valid_chars = (
         ";", ",", ":", "[", "]", "{", "}", "(", ")", "+", "-", "<", "=", "*", " ", "\n", "\t", "\r", "\f", "\v", "/")
 
-    key_word_table = list()
-    id_table = list()
     symbol_table = list()
     error_list = list()
     tokens_list = list()
@@ -75,7 +73,7 @@ class Scanners:
 
         else:
             token = Token("ID", str, self.lineno)
-            if not(str in self.id_table):
+            if not(str in self.symbol_table):
                 self.symbol_table.append(str)
 
         self.current_pointer = self.forward_pointer
