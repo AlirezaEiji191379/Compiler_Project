@@ -138,6 +138,7 @@ class Scanners:
                 self.forward_pointer = self.forward_pointer -1
             return -1
 
+
     def state11(self, c):
         if c == "\n":
             self.lineno = self.lineno + 1
