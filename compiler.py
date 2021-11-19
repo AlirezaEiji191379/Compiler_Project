@@ -16,6 +16,7 @@ terminals_set = set()
 ll1_table = {}
 grammar_production_rules = []
 no_error = True
+input_finished = False
 
 
 class TreeNode:
@@ -91,6 +92,7 @@ def set_first_and_follows():
     follows = convert_file_to_dict("follows.txt")
 
 def create_diagrams():
+    global diagram
     diagram = {}
     for rule in grammar_production_rules:
         key = rule[0]
@@ -101,7 +103,130 @@ def create_diagrams():
             terms_list.append(term)
         diagram[key].append(terms_list)
 
-    print(diagram)
+
+def get_token_value_or_kind():
+    inputTokenValue = ''
+    if current_token.token_kind == 'SYMBOL':
+        inputTokenValue = current_token.value
+    elif current_token.token_kind == 'ID':
+        inputTokenValue = current_token.token_kind
+    elif current_token.token_kind == 'KEYWORD':
+        inputTokenValue = current_token.value
+    elif current_token.token_kind == 'NUM':
+        inputTokenValue = current_token.token_kind
+    # should be replaced with: 'elif current_token == '$:'
+    elif current_token.token_kind == 'EOF':
+        inputTokenValue = '$'
+    return inputTokenValue
+
+def run_a_diagram(diagram_name):
+    global current_token, all_nodes
+    selected_path = select_best_path(diagram_name)
+
+    print('current token:' , get_token_value_or_kind())
+    print('we are in diagram of: ', diagram_name ,'     selected path is:', selected_path)
+
+    go_through_path(selected_path, diagram_name)
+            
+        
+def go_through_path(selected_path, diagram_name):
+    for edge in selected_path:
+        global current_token
+        print('diagram:', diagram_name, '    edge:', edge)
+
+        # parent is not true:
+        current_node = TreeNode(edge , parent=None)
+        all_nodes.append(current_node)
+        
+        if(edge in terminals_set):
+            if(match(edge)):
+                current_node.set_token(current_token)
+
+                current_token = scanner.get_next_token()
+
+                if(current_token == False):
+                    print('input finished')
+                    global input_finished
+                    input_finished = True
+                    current_token = Token('EOF', '$', 1)
+                    return
+                else:
+                    print('two terminals are matched and next token will be: ', current_token.value)
+                    return
+            else:
+                    print('two terminals not match')
+                    # handle error: two terminals not match
+        else:
+            print('\n...running diagram of: ', edge)
+            run_a_diagram(edge)
+            print('finished the diagram of: ', diagram_name)
+    if input_finished:
+        return
+
+
+def select_best_path(diagram_name):
+    selected_path = []
+    for path in diagram[diagram_name]:
+        first_edge_in_path = path[0]
+        inputTokenToCompare = get_token_value_or_kind()
+        if(inputTokenToCompare in firsts[first_edge_in_path]):
+            selected_path = path
+        elif(inputTokenToCompare in follows[diagram_name] and first_edge_in_path=='EPSILON'):
+            print('epsilon move in diagram: ', diagram_name)
+
+    if(len(selected_path)==0):
+        pass
+        # handle error: no suitable path in the diagram 
+
+    return selected_path
+
+
+def match(expected_token_value):
+    if(get_token_value_or_kind()==expected_token_value):
+         return True
+    else:
+        # error handling
+        return False    
+        
+
+def calculate_depth():
+    global head_node
+
+    def visit(node):
+        if node.is_leave():
+            return
+        depth = node.depth + 1
+        node.height = 0
+        for index in range(len(node.children) - 1, -1, -1):
+            child = node.children[index]
+            child.depth = depth
+            visit(child)
+            depth += child.height + 1
+            node.height += child.height + 1
+
+    visit(head_node)
+
+
+horizontal_lines = [0]
+
+
+def draw_tree():
+    global horizontal_lines
+    for node in all_nodes:
+        for child in node.children:
+            horizontal_lines.append(child.width)
+        for counter in range(0, node.width - 1):
+            if counter + 1 in horizontal_lines:
+                parse_tree.write('|   ')
+            else:
+                parse_tree.write('    ')
+        if node.width != 0:
+            if node == node.parent.children[0]:
+                parse_tree.write('L--- ')
+            else:
+                parse_tree.write('|--- ')
+        horizontal_lines.remove(node.width)
+        parse_tree.write(f'{node.show()}\n')
 
 if __name__ == '__main__':
 
@@ -109,72 +234,19 @@ if __name__ == '__main__':
     find_terminals_and_non_terminals()
     set_first_and_follows()
     create_diagrams()
-    
 
+    head_node = TreeNode('Program')
+    all_nodes = [head_node]
 
+    current_token = scanner.get_next_token()
+    run_a_diagram("Program")
+    print('\nnodes:')
+    for node in all_nodes:
+        print(node.value)
 
-# from Scanner.LexicalError import LexicalError
-# from Scanner.scanner import Scanners
-# import re
+    # calculate_depth()
+    # all_nodes.sort(key=operator.attrgetter('depth'))
 
-# f = open("input.txt", "r")
-# inputFile = f.read() + " "
-# scanner = Scanners(inputFile)
-
-
-# while True:
-#     tokens = scanner.get_next_token()
-#     if type(tokens) == bool:
-#         break
-#     tokenValue_Kind = tokens.value + "---->" + tokens.token_kind
-#     #print(tokenValue_Kind)
-
-# if scanner.current_state == 13:
-#     errorPart = scanner.program[scanner.current_pointer:scanner.current_pointer + 7] + "..."
-#     scanner.error_list.append(LexicalError(errorPart, "Unclosed comment", scanner.star_comment_line))
-
-# print()
-# print("tokens: ")
-# size = len(scanner.tokens_list)
-
-# currentLineNo = 0
-# tokensFileContent = ''
-
-# for i in range(size):
-#     if currentLineNo != scanner.tokens_list[i].lineno:
-#         currentLineNo = scanner.tokens_list[i].lineno
-#         if i != 0: tokensFileContent += '\n'
-#         tokensFileContent += str(currentLineNo) + '.\t'
-#     tokensFileContent += "(" + scanner.tokens_list[i].token_kind + ", " + scanner.tokens_list[i].value + ") "
-
-# print(tokensFileContent)
-# f = open('tokens.txt', 'w')
-# f.write(tokensFileContent)
-
-# print()
-# print("errors :")
-
-# size = len(scanner.error_list)
-# currentLineNo = 0
-
-# errorsFileContent = '' if size != 0 else 'There is no lexical error.'
-# for i in range(size):
-#     if currentLineNo != scanner.error_list[i].lineno:
-#         currentLineNo = scanner.error_list[i].lineno
-#         if i!=0:errorsFileContent += '\n'
-#         errorsFileContent += str(currentLineNo) + '.\t'
-#     errorsFileContent += "(" + scanner.error_list[i].error + ", " + scanner.error_list[i].error_kind + ") "
-
-# print(errorsFileContent)
-# f = open('lexical_errors.txt', 'w')
-# f.write(errorsFileContent)
-
-# print()
-# print("symbol table")
-
-# tableFileContent = ''
-# for i in range(len(scanner.symbol_table)):
-#     tableFileContent += str(i + 1) + '.  ' + scanner.symbol_table[i] + '\n'
-# print(tableFileContent)
-# f = open('symbol_table.txt', 'w')
-# f.write(tableFileContent)
+    # draw_tree()
+    # if no_error:
+    #     errors.write('There is no syntax error.')

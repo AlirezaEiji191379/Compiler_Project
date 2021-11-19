@@ -1,6 +1,6 @@
 Program -> Declaration-list $
 Declaration-list -> Declaration Declaration-list
-Declaration-list -> ε
+Declaration-list -> EPSILON
 Declaration -> Declaration-initial Declaration-prime
 Declaration-initial -> Type-specifier ID
 Declaration-prime -> Fun-declaration-prime
