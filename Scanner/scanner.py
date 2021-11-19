@@ -23,7 +23,7 @@ class Scanners:
 
     def __init__(self, input):
         self.program = input
-        print(self.program)
+        # print(self.program)
         self.size = len(input)
         self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return']
         pass
@@ -137,7 +137,6 @@ class Scanners:
             if c =="\n":
                 self.forward_pointer = self.forward_pointer -1
             return -1
-
 
     def state11(self, c):
         if c == "\n":
