@@ -51,6 +51,25 @@ class TreeNode:
         return self.value
 
 
+def draw_tree():
+    global horizontal_lines
+    for node in all_nodes:
+        for child in node.children:
+            horizontal_lines.append(child.width)
+        for counter in range(0, node.width - 1):
+            if counter + 1 in horizontal_lines:
+                parse_tree.write('|   ')
+            else:
+                parse_tree.write('    ')
+        if node.width != 0:
+            if node == node.parent.children[0]:
+                parse_tree.write('L--- ')
+            else:
+                parse_tree.write('|--- ')
+        horizontal_lines.remove(node.width)
+        parse_tree.write(f'{node.show()}\n')
+
+
 def split_grammar_rules():
     global grammar_production_rules
     grammar = open('grammar.txt', 'r').read()
@@ -214,25 +233,6 @@ def calculate_depth():
 horizontal_lines = [0]
 
 
-def draw_tree():
-    global horizontal_lines
-    for node in all_nodes:
-        for child in node.children:
-            horizontal_lines.append(child.width)
-        for counter in range(0, node.width - 1):
-            if counter + 1 in horizontal_lines:
-                parse_tree.write('|   ')
-            else:
-                parse_tree.write('    ')
-        if node.width != 0:
-            if node == node.parent.children[0]:
-                parse_tree.write('L--- ')
-            else:
-                parse_tree.write('|--- ')
-        horizontal_lines.remove(node.width)
-        parse_tree.write(f'{node.show()}\n')
-
-
 if __name__ == '__main__':
 
     split_grammar_rules()
@@ -252,6 +252,6 @@ if __name__ == '__main__':
     # calculate_depth()
     # all_nodes.sort(key=operator.attrgetter('depth'))
 
-    # draw_tree()
+    draw_tree()
     # if no_error:
     #     errors.write('There is no syntax error.')

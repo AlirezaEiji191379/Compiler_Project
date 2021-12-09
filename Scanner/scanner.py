@@ -7,7 +7,8 @@ from Scanner.Token import Token
 class Scanners:
     program = """"""
 
-    key_words = ("if", "else", "void", "int", "repeat", "break", "until", "return")
+    key_words = ("if", "else", "void", "int", "repeat",
+                 "break", "until", "return", "endif")
     valid_chars = (
         ";", ",", ":", "[", "]", "{", "}", "(", ")", "+", "-", "<", "=", "*", " ", "\n", "\t", "\r", "\f", "\v", "/")
 
@@ -25,7 +26,8 @@ class Scanners:
         self.program = input
         # print(self.program)
         self.size = len(input)
-        self.symbol_table += ['if', 'else', 'void', 'int', 'repeat', 'break', 'until', 'return']
+        self.symbol_table += ['if', 'else', 'void',
+                              'int', 'repeat', 'break', 'until', 'return']
         pass
 
     def start_state(self, c):
@@ -134,8 +136,8 @@ class Scanners:
             self.forward_pointer = self.forward_pointer + 1
             return 13
         else:
-            if c =="\n":
-                self.forward_pointer = self.forward_pointer -1
+            if c == "\n":
+                self.forward_pointer = self.forward_pointer - 1
             return -1
 
     def state11(self, c):
@@ -202,10 +204,12 @@ class Scanners:
                 return False
 
             if self.current_state == 0:
-                self.current_state = self.start_state(self.program[self.forward_pointer])
+                self.current_state = self.start_state(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 1:
-                self.current_state = self.state1(self.program[self.forward_pointer])
+                self.current_state = self.state1(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 2:
                 self.current_state, compiler_token = self.state2()
@@ -213,9 +217,9 @@ class Scanners:
                 return compiler_token
 
             elif self.current_state == 3:
-                self.current_state = self.state3(self.program[self.forward_pointer])
+                self.current_state = self.state3(
+                    self.program[self.forward_pointer])
                 # print(self.program[self.forward_pointer])
-
 
             elif self.current_state == 4:
                 self.current_state, compiler_token = self.state4()
@@ -228,7 +232,8 @@ class Scanners:
                 return compiler_token
 
             elif self.current_state == 6:
-                self.current_state = self.state6(self.program[self.forward_pointer])
+                self.current_state = self.state6(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 7:
                 self.current_state, compiler_token = self.state7()
@@ -236,7 +241,8 @@ class Scanners:
                 return compiler_token
 
             elif self.current_state == 8:
-                self.current_state = self.state8(self.program[self.forward_pointer])
+                self.current_state = self.state8(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 9:
                 self.current_state, compiler_token = self.state9()
@@ -244,22 +250,27 @@ class Scanners:
                 return compiler_token
 
             elif self.current_state == 10:
-                self.current_state = self.state10(self.program[self.forward_pointer])
+                self.current_state = self.state10(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 11:
-                self.current_state = self.state11(self.program[self.forward_pointer])
+                self.current_state = self.state11(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 12:
                 self.current_state = self.state12()
 
             elif self.current_state == 13:
-                self.current_state = self.state13(self.program[self.forward_pointer])
+                self.current_state = self.state13(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 14:
-                self.current_state = self.state14(self.program[self.forward_pointer])
+                self.current_state = self.state14(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == 15:
-                self.current_state = self.state15(self.program[self.forward_pointer])
+                self.current_state = self.state15(
+                    self.program[self.forward_pointer])
 
             elif self.current_state == -1:
                 self.current_state = self.error_state()
