@@ -13,7 +13,6 @@ errors = open('syntax_errors.txt', 'w')
 parse_tree = open('parse_tree.txt', 'w')
 non_terminals_set = set()
 terminals_set = set()
-ll1_table = {}
 grammar_production_rules = []
 no_error = True
 input_finished = False
@@ -57,7 +56,8 @@ def split_grammar_rules():
     grammar = open('grammar.txt', 'r').read()
     grammar_production_rules = re.split('\n', grammar)
     for i in range(0, len(grammar_production_rules)):
-        grammar_production_rules[i] = re.split(' -> | ', grammar_production_rules[i])
+        grammar_production_rules[i] = re.split(
+            ' -> | ', grammar_production_rules[i])
 
 
 def find_terminals_and_non_terminals():
@@ -91,6 +91,7 @@ def set_first_and_follows():
         firsts[terminal] = {terminal}
     follows = convert_file_to_dict("follows.txt")
 
+
 def create_diagrams():
     global diagram
     diagram = {}
@@ -98,7 +99,7 @@ def create_diagrams():
         key = rule[0]
         if key not in diagram:
             diagram[key] = []
-        terms_list = []    
+        terms_list = []
         for term in rule[1:]:
             terms_list.append(term)
         diagram[key].append(terms_list)
@@ -119,25 +120,27 @@ def get_token_value_or_kind():
         inputTokenValue = '$'
     return inputTokenValue
 
+
 def run_a_diagram(diagram_name):
     global current_token, all_nodes
     selected_path = select_best_path(diagram_name)
 
-    print('current token:' , get_token_value_or_kind())
-    print('we are in diagram of: ', diagram_name ,'     selected path is:', selected_path)
+    print('current token:', get_token_value_or_kind())
+    print('we are in diagram of: ', diagram_name,
+          '     selected path is:', selected_path)
 
     go_through_path(selected_path, diagram_name)
-            
-        
+
+
 def go_through_path(selected_path, diagram_name):
     for edge in selected_path:
         global current_token
         print('diagram:', diagram_name, '    edge:', edge)
 
         # parent is not true:
-        current_node = TreeNode(edge , parent=None)
+        current_node = TreeNode(edge, parent=None)
         all_nodes.append(current_node)
-        
+
         if(edge in terminals_set):
             if(match(edge)):
                 current_node.set_token(current_token)
@@ -151,11 +154,12 @@ def go_through_path(selected_path, diagram_name):
                     current_token = Token('EOF', '$', 1)
                     return
                 else:
-                    print('two terminals are matched and next token will be: ', current_token.value)
+                    print(
+                        'two terminals are matched and next token will be: ', current_token.value)
                     return
             else:
-                    print('two terminals not match')
-                    # handle error: two terminals not match
+                print('two terminals not match')
+                # handle error: two terminals not match
         else:
             print('\n...running diagram of: ', edge)
             run_a_diagram(edge)
@@ -171,23 +175,23 @@ def select_best_path(diagram_name):
         inputTokenToCompare = get_token_value_or_kind()
         if(inputTokenToCompare in firsts[first_edge_in_path]):
             selected_path = path
-        elif(inputTokenToCompare in follows[diagram_name] and first_edge_in_path=='EPSILON'):
+        elif(inputTokenToCompare in follows[diagram_name] and first_edge_in_path == 'EPSILON'):
             print('epsilon move in diagram: ', diagram_name)
 
-    if(len(selected_path)==0):
+    if(len(selected_path) == 0):
         pass
-        # handle error: no suitable path in the diagram 
+        # handle error: no suitable path in the diagram
 
     return selected_path
 
 
 def match(expected_token_value):
-    if(get_token_value_or_kind()==expected_token_value):
-         return True
+    if(get_token_value_or_kind() == expected_token_value):
+        return True
     else:
         # error handling
-        return False    
-        
+        return False
+
 
 def calculate_depth():
     global head_node
@@ -227,6 +231,7 @@ def draw_tree():
                 parse_tree.write('|--- ')
         horizontal_lines.remove(node.width)
         parse_tree.write(f'{node.show()}\n')
+
 
 if __name__ == '__main__':
 
