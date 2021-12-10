@@ -207,8 +207,12 @@ class TreeNode:
 
     def show(self):
         if self.is_terminal:
-            return "(" + self.token.token_kind + ", " + self.token.value + ") "
-        if self.value == 'ε':
+            if self.value == '$':
+                return '$'
+            else:
+                return "(" + self.token.token_kind + ", " + self.token.value + ") "
+
+        if self.value == 'EPSILON':
             return 'epsilon'
         return self.value
 
