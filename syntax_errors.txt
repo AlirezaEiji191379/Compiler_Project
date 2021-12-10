@@ -1,4 +1,5 @@
-#19 : syntax error, missing ]
-#19 : syntax error, missing ;
-#19 : syntax error, illegal )
-#19 : syntax error, illegal ]
+#12 : syntax error, missing endif
+#16 : syntax error, illegal ID
+#17 : syntax error, illegal ;
+#18 : syntax error, illegal }
+#19 : syntax error, Unexpected EOF

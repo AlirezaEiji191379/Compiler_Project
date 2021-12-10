@@ -22,6 +22,7 @@ epsilonGrammerRules = ['Declaration-list', 'Param-list', 'Param-prime',
                        'Statement-list', 'C', 'D', 'G', 'Var-prime', 'Factor-prime', 'Args', 'Arg-list-prime']
 
 current_token = None
+no_read_token = False
 
 
 def split_grammar_rules():
@@ -96,7 +97,7 @@ def create_diagrams():
 
 def run_a_diagram(diagram_name):
     global current_token, all_nodes
-    selected_path = select_best_path(diagram_name.name)
+    selected_path = select_best_path(diagram_name)
 
     if selected_path == False:
         return False
@@ -105,7 +106,7 @@ def run_a_diagram(diagram_name):
         return -1
 
     print('current token:', get_token_value_or_kind())
-    print('we are in diagram of: ', diagram_name.name,
+    print('we are in diagram of: ', diagram_name,
           '     selected path is:', selected_path)
 
     go_through_path(selected_path, diagram_name)
@@ -114,8 +115,11 @@ def run_a_diagram(diagram_name):
 
 def select_best_path(diagram_name):
     global current_token
+    global no_read_token
+    global root
+
     selected_path = []
-    for path in diagram[diagram_name]:
+    for path in diagram[diagram_name.name]:
         first_edge_in_path = path[0]
         inputTokenToCompare = get_token_value_or_kind()
         print("first edge in path: " + first_edge_in_path)
@@ -134,15 +138,15 @@ def select_best_path(diagram_name):
                 selected_path = path
                 break
 
-        if(inputTokenToCompare in follows[diagram_name]) and (diagram_name in epsilonGrammerRules):
+        if(inputTokenToCompare in follows[diagram_name.name]) and (diagram_name.name in epsilonGrammerRules):
             selected_path = ['EPSILON']
-            print('epsilon move in diagram: ', diagram_name)
+            print('epsilon move in diagram: ', diagram_name.name)
             break
 
     if(len(selected_path) == 0):
         print("alireza current token is :" + current_token.value)
-        print(diagram_name)
-        if current_token.value not in follows[diagram_name]:
+        print(diagram_name.name)
+        if current_token.value not in follows[diagram_name.name]:
             x = None
             if current_token.token_kind == 'ID' or current_token.token_kind == 'NUM':
                 x = current_token.token_kind
@@ -165,11 +169,21 @@ def select_best_path(diagram_name):
                 error = "#"+str(current_token.lineno) + \
                     " : syntax error, Unexpected EOF"
                 syntax_errors.append(error)
+                no_read_token = True
+                print(
+                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+                diagram_name.parent = None
+                draw_tree(root)
+                write_errors()
+                parse_tree.close()
+                errors.close()
+                quit()
+                print("x + "+diagram_name.name)
                 return False
 
         else:
             error = "#"+str(current_token.lineno) + \
-                " : syntax error, missing " + diagram_name
+                " : syntax error, missing " + diagram_name.name
             syntax_errors.append(error)
             return -1
             # handle error: no suitable path in the diagram
@@ -178,6 +192,7 @@ def select_best_path(diagram_name):
 
 
 def go_through_path(selected_path, parent_node):
+    global no_read_token
     for edge in selected_path:
         global current_token
         print('diagram:', parent_node.name, '    edge:', edge)
@@ -217,17 +232,15 @@ def go_through_path(selected_path, parent_node):
                     error = "#"+str(current_token.lineno) + " : " + \
                         "syntax error, missing "+str(edge)
                     syntax_errors.append(error)
-                    print(
-                        '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$two terminals not match')
+                    edge_node.parent = None
 
         else:
             print('\n...running diagram of: ', edge)
             x = run_a_diagram(edge_node)
             if x != True:
-                print(
-                    "HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
                 edge_node.parent = None
             print('finished the diagram of: ', edge)
+
     if input_finished:
         return
 
