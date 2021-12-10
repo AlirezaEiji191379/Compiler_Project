@@ -192,7 +192,10 @@ def match(expected_token_value):
 
 def draw_tree(root):
     for pre, fill, node in RenderTree(root):
-        parse_tree.write("%s%s" % (pre, node.name)+'\n')
+        if node.name != '$':
+            parse_tree.write("%s%s" % (pre, node.name)+'\n')
+        else:
+            parse_tree.write("%s%s" % (pre, node.name))
 
 
 if __name__ == '__main__':
