@@ -1,0 +1,71 @@
+Program
+L--- Declaration-list
+|   L--- Declaration
+|   |   L--- Declaration-initial
+|   |   |   L--- Type-specifier
+|   |   |   |   L--- (KEYWORD, void) 
+|   |   |   |--- (ID, main) 
+|   |   |--- Declaration-prime
+|   |   |   L--- Fun-declaration-prime
+|   |   |   |   L--- (SYMBOL, () 
+|   |   |   |   |--- Params
+|   |   |   |   |   L--- (KEYWORD, void) 
+|   |   |   |   |--- (SYMBOL, )) 
+|   |   |   |   |--- Compound-stmt
+|   |   |   |   |   L--- (SYMBOL, {) 
+|   |   |   |   |   |--- Declaration-list
+|   |--- Declaration
+|   |   |--- Declaration-initial
+|   |   |   |--- Type-specifier
+|   |   |   |   |--- (KEYWORD, int) 
+|   |   |   |--- (ID, a) 
+|   |   |--- Declaration-prime
+|   |   |   |--- Var-declaration-prime
+|   |   |   |   L--- (SYMBOL, ;) 
+|   |--- Declaration-list
+|   |--- Declaration
+|   |   |--- Declaration-initial
+|   |   |   |--- Type-specifier
+|   |   |   |   |--- (KEYWORD, int) 
+|   |   |   |--- (ID, b) 
+|   |   |--- Declaration-prime
+|   |       |--- Var-declaration-prime
+|   |           |--- (SYMBOL, ;) 
+|   |--- Declaration-list
+|   |--- EPSILON
+|   |               |--- Statement-list
+|   |               |   L--- Statement
+|   |               |   |   L--- Expression-stmt
+|   |               |   |       L--- Expression
+|   |               |   |       |   L--- (ID, a) 
+|   |               |   |       |   |--- B
+|   |               |   |       |   |   L--- (SYMBOL, =) 
+|   |               |   |       |   |   |--- Expression
+|   |               |   |       |   |--- (ID, b) 
+|   |               |   |       |   |--- B
+|   |               |   |       |       |--- Simple-expression-prime
+|   |               |   |       |           L--- Additive-expression-prime
+|   |               |   |       |           |   L--- Term-prime
+|   |               |   |       |           |   |   L--- Factor-prime
+|   |               |   |       |           |   |   |   L--- EPSILON
+|   |               |   |       |           |   |   |--- G
+|   |               |   |       |           |   |       L--- EPSILON
+|   |               |   |       |           |   |--- D
+|   |               |   |       |           |       L--- Addop
+|   |               |   |       |           |       |   L--- (SYMBOL, +) 
+|   |               |   |       |           |       |--- Term
+|   |               |   |       |           |       |   L--- Factor
+|   |               |   |       |           |       |   |   L--- (NUM, 1) 
+|   |               |   |       |           |       |   |--- G
+|   |               |   |       |           |       |   |--- EPSILON
+|   |               |   |       |           |       |--- D
+|   |               |   |       |           |       |--- EPSILON
+|   |               |   |       |           |--- C
+|   |               |   |       |               L--- EPSILON
+|   |               |   |       |--- (SYMBOL, ;) 
+|   |               |   |--- Statement-list
+|   |               |   |--- EPSILON
+|   |               |--- (SYMBOL, }) 
+|   |--- Declaration-list
+|   |--- EPSILON
+|--- (EOF, $) 
