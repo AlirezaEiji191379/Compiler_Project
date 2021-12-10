@@ -144,6 +144,9 @@ def go_through_path(selected_path, parent_node):
 
         # # parent is not true:
         edge_node = Node(edge, parent=parent_node)
+
+        if edge == 'EPSILON':
+            edge_node.name = 'epsilon'
         # parent_node.add_child(current_node)
         all_nodes.append(edge_node)
 
