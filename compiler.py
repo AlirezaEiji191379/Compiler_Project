@@ -105,10 +105,6 @@ def run_a_diagram(diagram_name):
     if selected_path == -1:
         return -1
 
-    print('current token:', get_token_value_or_kind())
-    print('we are in diagram of: ', diagram_name,
-          '     selected path is:', selected_path)
-
     go_through_path(selected_path, diagram_name)
     return True
 
@@ -122,7 +118,7 @@ def select_best_path(diagram_name):
     for path in diagram[diagram_name.name]:
         first_edge_in_path = path[0]
         inputTokenToCompare = get_token_value_or_kind()
-        print("first edge in path: " + first_edge_in_path)
+
         if first_edge_in_path in non_terminals_set:
             if(inputTokenToCompare in firsts[first_edge_in_path]):
                 selected_path = path
@@ -140,11 +136,11 @@ def select_best_path(diagram_name):
 
         if(inputTokenToCompare in follows[diagram_name.name]) and (diagram_name.name in epsilonGrammerRules):
             selected_path = ['EPSILON']
-            print('epsilon move in diagram: ', diagram_name.name)
+
             break
 
     if(len(selected_path) == 0):
-        print("alireza current token is :" + current_token.value)
+
         print(diagram_name.name)
         if current_token.value not in follows[diagram_name.name]:
             x = None
@@ -161,17 +157,15 @@ def select_best_path(diagram_name):
                 current_token = scanner.get_next_token()
                 if current_token == False:
                     current_token = Token(
-                        'EOF', '$', previous_token.lineno + 1)
-                print("now current token is " + current_token.value)
+                        'EOF', '$', previous_token.lineno)
+
                 return select_best_path(diagram_name)
 
             else:
-                error = "#"+str(current_token.lineno) + \
+                error = "#"+str(scanner.lineno) + \
                     " : syntax error, Unexpected EOF"
                 syntax_errors.append(error)
                 no_read_token = True
-                print(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
                 diagram_name.parent = None
                 draw_tree(root)
                 write_errors()
@@ -195,13 +189,8 @@ def go_through_path(selected_path, parent_node):
     global no_read_token
     for edge in selected_path:
         global current_token
-        print('diagram:', parent_node.name, '    edge:', edge)
-
         edge_node = None
         edge_node = Node(edge, parent=parent_node)
-
-        # all_nodes.append(edge_node)
-
         if(edge in terminals_set):
 
             if edge == 'EPSILON':
@@ -214,7 +203,6 @@ def go_through_path(selected_path, parent_node):
                 else:
                     edge_node.name = '$'
 
-                # current_node.set_token(current_token)
                 current_token = scanner.get_next_token()
                 if(current_token == False):
                     print('input finished')
@@ -223,8 +211,7 @@ def go_through_path(selected_path, parent_node):
                     current_token = Token('EOF', '$', 100)
                     return
                 else:
-                    print(
-                        'two terminals are matched and next token will be: ', current_token.value)
+                    pass
 
             else:
                 # handle error: two terminals not match
@@ -235,11 +222,9 @@ def go_through_path(selected_path, parent_node):
                     edge_node.parent = None
 
         else:
-            print('\n...running diagram of: ', edge)
             x = run_a_diagram(edge_node)
             if x != True:
                 edge_node.parent = None
-            print('finished the diagram of: ', edge)
 
     if input_finished:
         return
@@ -280,14 +265,7 @@ if __name__ == '__main__':
     all_nodes = [root]
     current_token = scanner.get_next_token()
     run_a_diagram(root)
-    # print('\nnodes:')
-    # for node in all_nodes:
-    #     print(node.name)
-    # print("***************************************")
-
     draw_tree(root)
     write_errors()
     parse_tree.close()
     errors.close()
-    # if no_error:
-    #     errors.write('There is no syntax error.')

@@ -16,3 +16,4 @@ void main  ( void )
 	i func (2+4);
 	output(i;
 }
+
