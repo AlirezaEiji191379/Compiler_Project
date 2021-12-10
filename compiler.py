@@ -4,13 +4,14 @@ from Scanner.Token import Token
 from Scanner.scanner import Scanners
 import re
 import operator
+from anytree import Node, RenderTree
 
 f = open("input.txt", "r")
 inputFile = f.read() + " "
 scanner = Scanners(inputFile)
 
 errors = open('syntax_errors.txt', 'w')
-parse_tree = open('parse_tree.txt', 'w')
+parse_tree = open('parse_tree.txt', 'w', encoding='utf-8')
 non_terminals_set = set()
 terminals_set = set()
 grammar_production_rules = []
@@ -94,10 +95,10 @@ def create_diagrams():
 
 def run_a_diagram(diagram_name):
     global current_token, all_nodes
-    selected_path = select_best_path(diagram_name)
+    selected_path = select_best_path(diagram_name.name)
 
     print('current token:', get_token_value_or_kind())
-    print('we are in diagram of: ', diagram_name,
+    print('we are in diagram of: ', diagram_name.name,
           '     selected path is:', selected_path)
 
     go_through_path(selected_path, diagram_name)
@@ -136,20 +137,25 @@ def select_best_path(diagram_name):
     return selected_path
 
 
-def go_through_path(selected_path, diagram_name):
+def go_through_path(selected_path, parent_node):
     for edge in selected_path:
         global current_token
-        print('diagram:', diagram_name, '    edge:', edge)
+        print('diagram:', parent_node.name, '    edge:', edge)
 
-        # parent is not true:
-        parent_node = getNodeByValue(diagram_name)
-        current_node = TreeNode(edge, parent=parent_node)
-        parent_node.add_child(current_node)
+        # # parent is not true:
+        edge_node = Node(edge, parent=parent_node)
+        # parent_node.add_child(current_node)
+        all_nodes.append(edge_node)
 
-        all_nodes.append(current_node)
         if(edge in terminals_set):
             if(match(edge)):
-                current_node.set_token(current_token)
+                if current_token.value != '$':
+                    edge_node.name = "(" + current_token.token_kind + \
+                        ", " + current_token.value + ")"
+                else:
+                    edge_node.name = '$'
+
+                # current_node.set_token(current_token)
                 current_token = scanner.get_next_token()
                 if(current_token == False):
                     print('input finished')
@@ -166,7 +172,8 @@ def go_through_path(selected_path, diagram_name):
                 # handle error: two terminals not match
         else:
             print('\n...running diagram of: ', edge)
-            run_a_diagram(edge)
+            run_a_diagram(edge_node)
+            #all_nodes.append(Node(edge, parent_node))
             print('finished the diagram of: ', edge)
     if input_finished:
         return
@@ -210,7 +217,7 @@ class TreeNode:
             if self.value == '$':
                 return '$'
             else:
-                return "(" + self.token.token_kind + ", " + self.token.value + ") "
+                return "(" + self.token.token_kind + ", " + self.token.value + ")"
 
         if self.value == 'EPSILON':
             return 'epsilon'
@@ -239,7 +246,7 @@ def getNodeByValue(value):
     global all_nodes
 
     for node in all_nodes:
-        if node.value == value:
+        if node.name == value:
             return node
     return None
 
@@ -247,23 +254,28 @@ def getNodeByValue(value):
 horizontal_lines = [0]
 
 
+# def draw_tree():
+#     global horizontal_lines
+#     for node in all_nodes:
+#         for child in node.children:
+#             horizontal_lines.append(child.width)
+#         for counter in range(0, node.width - 1):
+#             if counter + 1 in horizontal_lines:
+#                 parse_tree.write('|   ')
+#             else:
+#                 parse_tree.write('    ')
+#         if node.width != 0:
+#             if node == node.parent.children[0]:
+#                 parse_tree.write('L--- ')
+#             else:
+#                 parse_tree.write('|--- ')
+#         horizontal_lines.remove(node.width)
+#         parse_tree.write(f'{node.show()}\n')
+
 def draw_tree():
-    global horizontal_lines
-    for node in all_nodes:
-        for child in node.children:
-            horizontal_lines.append(child.width)
-        for counter in range(0, node.width - 1):
-            if counter + 1 in horizontal_lines:
-                parse_tree.write('|   ')
-            else:
-                parse_tree.write('    ')
-        if node.width != 0:
-            if node == node.parent.children[0]:
-                parse_tree.write('L--- ')
-            else:
-                parse_tree.write('|--- ')
-        horizontal_lines.remove(node.width)
-        parse_tree.write(f'{node.show()}\n')
+    program = getNodeByValue('Program')
+    for pre, fill, node in RenderTree(program):
+        parse_tree.write("%s%s" % (pre, node.name)+'\n')
 
 
 if __name__ == '__main__':
@@ -273,16 +285,16 @@ if __name__ == '__main__':
     set_first_and_follows()
     create_diagrams()
 
-    head_node = TreeNode('Program')
-    all_nodes = [head_node]
+    root = Node('Program', None)
+    all_nodes = [root]
     current_token = scanner.get_next_token()
-    run_a_diagram("Program")
+    run_a_diagram(root)
     print('\nnodes:')
     for node in all_nodes:
-        print(node.value)
+        print(node.name)
     print("***************************************")
 
-    calculate_depth()
+    # calculate_depth()
     # all_nodes.sort(key=operator.attrgetter('depth'))
     draw_tree()
     parse_tree.close()
