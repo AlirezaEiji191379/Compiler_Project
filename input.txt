@@ -1,13 +1,18 @@
-/*sample 2*/
-void main(void){
-	int p;
+/*sample 7*/
+int func(int x){
+	int a;
+	a = 10;
+	output(x);
+	if(a < x) {
+		return(1);
+	}
+	else {
+		return(2);
+	}
+}
+void main  ( void )
+{
 	int i;
-	p = 2 + 1;
-	i = 1;
-	repeat {
-		p = i * p;
-		i = i - 2;
-	} until (i < 8)
-	output(p);
-	return;
+	i func (2+4);
+	output(i;
 }

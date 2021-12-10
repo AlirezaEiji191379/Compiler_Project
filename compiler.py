@@ -1,3 +1,4 @@
+from os import error
 from typing import Type
 from Scanner.LexicalError import LexicalError
 from Scanner.Token import Token
@@ -9,8 +10,8 @@ from anytree import Node, RenderTree
 f = open("input.txt", "r")
 inputFile = f.read() + " "
 scanner = Scanners(inputFile)
-
-errors = open('syntax_errors.txt', 'w')
+syntax_errors = []
+errors = open('syntax_errors.txt', 'w', encoding='utf-8')
 parse_tree = open('parse_tree.txt', 'w', encoding='utf-8')
 non_terminals_set = set()
 terminals_set = set()
@@ -97,14 +98,22 @@ def run_a_diagram(diagram_name):
     global current_token, all_nodes
     selected_path = select_best_path(diagram_name.name)
 
+    if selected_path == False:
+        return False
+
+    if selected_path == -1:
+        return -1
+
     print('current token:', get_token_value_or_kind())
     print('we are in diagram of: ', diagram_name.name,
           '     selected path is:', selected_path)
 
     go_through_path(selected_path, diagram_name)
+    return True
 
 
 def select_best_path(diagram_name):
+    global current_token
     selected_path = []
     for path in diagram[diagram_name]:
         first_edge_in_path = path[0]
@@ -131,8 +140,39 @@ def select_best_path(diagram_name):
             break
 
     if(len(selected_path) == 0):
-        pass
-        # handle error: no suitable path in the diagram
+        print("alireza current token is :" + current_token.value)
+        print(diagram_name)
+        if current_token.value not in follows[diagram_name]:
+            x = None
+            if current_token.token_kind == 'ID' or current_token.token_kind == 'NUM':
+                x = current_token.token_kind
+            else:
+                x = current_token.value
+
+            if current_token.value != '$':
+                error = "#"+str(current_token.lineno) + " : " + \
+                    "syntax error, illegal "+str(x)
+                previous_token = current_token
+                syntax_errors.append(error)
+                current_token = scanner.get_next_token()
+                if current_token == False:
+                    current_token = Token(
+                        'EOF', '$', previous_token.lineno + 1)
+                print("now current token is " + current_token.value)
+                return select_best_path(diagram_name)
+
+            else:
+                error = "#"+str(current_token.lineno) + \
+                    " : syntax error, Unexpected EOF"
+                syntax_errors.append(error)
+                return False
+
+        else:
+            error = "#"+str(current_token.lineno) + \
+                " : syntax error, missing " + diagram_name
+            syntax_errors.append(error)
+            return -1
+            # handle error: no suitable path in the diagram
 
     return selected_path
 
@@ -142,15 +182,16 @@ def go_through_path(selected_path, parent_node):
         global current_token
         print('diagram:', parent_node.name, '    edge:', edge)
 
-        # # parent is not true:
+        edge_node = None
         edge_node = Node(edge, parent=parent_node)
 
-        if edge == 'EPSILON':
-            edge_node.name = 'epsilon'
-        # parent_node.add_child(current_node)
-        all_nodes.append(edge_node)
+        # all_nodes.append(edge_node)
 
         if(edge in terminals_set):
+
+            if edge == 'EPSILON':
+                edge_node.name = 'epsilon'
+
             if(match(edge)):
                 if current_token.value != '$':
                     edge_node.name = "(" + current_token.token_kind + \
@@ -169,14 +210,23 @@ def go_through_path(selected_path, parent_node):
                 else:
                     print(
                         'two terminals are matched and next token will be: ', current_token.value)
-                    # return
+
             else:
-                print('two terminals not match')
                 # handle error: two terminals not match
+                if edge != "EPSILON":
+                    error = "#"+str(current_token.lineno) + " : " + \
+                        "syntax error, missing "+str(edge)
+                    syntax_errors.append(error)
+                    print(
+                        '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$two terminals not match')
+
         else:
             print('\n...running diagram of: ', edge)
-            run_a_diagram(edge_node)
-            #all_nodes.append(Node(edge, parent_node))
+            x = run_a_diagram(edge_node)
+            if x != True:
+                print(
+                    "HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+                edge_node.parent = None
             print('finished the diagram of: ', edge)
     if input_finished:
         return
@@ -191,11 +241,19 @@ def match(expected_token_value):
 
 
 def draw_tree(root):
+    global parse_tree
+    global input_finished
     for pre, fill, node in RenderTree(root):
-        if node.name != '$':
-            parse_tree.write("%s%s" % (pre, node.name)+'\n')
-        else:
-            parse_tree.write("%s%s" % (pre, node.name))
+        parse_tree.write("%s%s" % (pre, node.name)+'\n')
+
+
+def write_errors():
+    global errors
+    if len(syntax_errors) == 0:
+        errors.write("There is no syntax error.")
+    else:
+        for e in syntax_errors:
+            errors.write(e+"\n")
 
 
 if __name__ == '__main__':
@@ -209,12 +267,13 @@ if __name__ == '__main__':
     all_nodes = [root]
     current_token = scanner.get_next_token()
     run_a_diagram(root)
-    print('\nnodes:')
-    for node in all_nodes:
-        print(node.name)
-    print("***************************************")
+    # print('\nnodes:')
+    # for node in all_nodes:
+    #     print(node.name)
+    # print("***************************************")
 
     draw_tree(root)
+    write_errors()
     parse_tree.close()
     errors.close()
     # if no_error:
