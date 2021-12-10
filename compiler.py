@@ -187,94 +187,8 @@ def match(expected_token_value):
         return False
 
 
-class TreeNode:
-    def __init__(self, value, width=0, parent=None):
-        self.parent = parent
-        self.value = value
-        self.children = []
-        self.width = width
-        self.depth = 0
-        self.height = 0
-        self.is_terminal = False
-        self.token = None
-
-    def add_child(self, child):
-        self.children.append(child)
-        child.width = self.width + 1
-
-    def is_leave(self):
-        return len(self.children) == 0
-
-    def __str__(self):
-        return str(self.value) + " " + str(self.width) + " " + str(self.depth)
-
-    def set_token(self, token):
-        self.token = token
-        self.is_terminal = True
-
-    def show(self):
-        if self.is_terminal:
-            if self.value == '$':
-                return '$'
-            else:
-                return "(" + self.token.token_kind + ", " + self.token.value + ")"
-
-        if self.value == 'EPSILON':
-            return 'epsilon'
-        return self.value
-
-
-def calculate_depth():
-    global head_node
-
-    def visit(node):
-        if node.is_leave():
-            return
-        depth = node.depth + 1
-        node.height = 0
-        for index in range(len(node.children) - 1, -1, -1):
-            child = node.children[index]
-            child.depth = depth
-            visit(child)
-            depth += child.height + 1
-            node.height += child.height + 1
-
-    visit(head_node)
-
-
-def getNodeByValue(value):
-    global all_nodes
-
-    for node in all_nodes:
-        if node.name == value:
-            return node
-    return None
-
-
-horizontal_lines = [0]
-
-
-# def draw_tree():
-#     global horizontal_lines
-#     for node in all_nodes:
-#         for child in node.children:
-#             horizontal_lines.append(child.width)
-#         for counter in range(0, node.width - 1):
-#             if counter + 1 in horizontal_lines:
-#                 parse_tree.write('|   ')
-#             else:
-#                 parse_tree.write('    ')
-#         if node.width != 0:
-#             if node == node.parent.children[0]:
-#                 parse_tree.write('L--- ')
-#             else:
-#                 parse_tree.write('|--- ')
-#         horizontal_lines.remove(node.width)
-#         parse_tree.write(f'{node.show()}\n')
-
-def draw_tree():
-    program = getNodeByValue('Program')
-    for pre, fill, node in RenderTree(program):
+def draw_tree(root):
+    for pre, fill, node in RenderTree(root):
         parse_tree.write("%s%s" % (pre, node.name)+'\n')
 
 
@@ -294,9 +208,7 @@ if __name__ == '__main__':
         print(node.name)
     print("***************************************")
 
-    # calculate_depth()
-    # all_nodes.sort(key=operator.attrgetter('depth'))
-    draw_tree()
+    draw_tree(root)
     parse_tree.close()
     errors.close()
     # if no_error:
