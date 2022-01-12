@@ -6,6 +6,7 @@ from Scanner.scanner import Scanners
 import re
 import operator
 from anytree import Node, RenderTree
+from code_gen import generate_intermediate_code, save_code_gen
 
 f = open("input.txt", "r")
 inputFile = f.read() + " "
@@ -25,9 +26,9 @@ current_token = None
 no_read_token = False
 
 
-def split_grammar_rules():
+def split_grammar_rules(file):
     global grammar_production_rules
-    grammar = open('grammar.txt', 'r').read()
+    grammar = open(file, 'r').read()
     grammar_production_rules = re.split('\n', grammar)
     for i in range(0, len(grammar_production_rules)):
         grammar_production_rules[i] = re.split(
@@ -104,7 +105,8 @@ def run_a_diagram(diagram_name):
 
     if selected_path == -1:
         return -1
-
+    
+    print(diagram_name.name, ": ",  selected_path)
     go_through_path(selected_path, diagram_name)
     return True
 
@@ -116,9 +118,14 @@ def select_best_path(diagram_name):
 
     selected_path = []
     for path in diagram[diagram_name.name]:
-        first_edge_in_path = path[0]
         inputTokenToCompare = get_token_value_or_kind()
 
+        for edge in path:
+            if(edge[0] == '#'):
+                    continue
+            else:
+                first_edge_in_path = edge
+                break
         if first_edge_in_path in non_terminals_set:
             if(inputTokenToCompare in firsts[first_edge_in_path]):
                 selected_path = path
@@ -141,7 +148,7 @@ def select_best_path(diagram_name):
 
     if(len(selected_path) == 0):
 
-        print(diagram_name.name)
+        # print(diagram_name.name)
         if current_token.value not in follows[diagram_name.name]:
             x = None
             if current_token.token_kind == 'ID' or current_token.token_kind == 'NUM':
@@ -191,7 +198,11 @@ def go_through_path(selected_path, parent_node):
         global current_token
         edge_node = None
         edge_node = Node(edge, parent=parent_node)
-        if(edge in terminals_set):
+
+        print('edge is:', edge, '   current token is:', current_token.value)
+        if edge[0]=='#':
+            generate_intermediate_code(edge, current_token)
+        elif(edge in terminals_set):
 
             if edge == 'EPSILON':
                 edge_node.name = 'epsilon'
@@ -254,18 +265,20 @@ def write_errors():
             errors.write(e+"\n")
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
 
-    split_grammar_rules()
+    split_grammar_rules('grammar.txt')
     find_terminals_and_non_terminals()
     set_first_and_follows()
-    create_diagrams()
 
     root = Node('Program', None)
     all_nodes = [root]
     current_token = scanner.get_next_token()
+    split_grammar_rules('grammerWithSymbols.txt')
+    create_diagrams()
     run_a_diagram(root)
     draw_tree(root)
+    save_code_gen()
     write_errors()
     parse_tree.close()
     errors.close()

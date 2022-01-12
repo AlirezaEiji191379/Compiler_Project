@@ -1,0 +1,460 @@
+Program
+├── #startscope
+├── Declaration-list
+│   ├── Declaration
+│   │   ├── Declaration-initial
+│   │   │   ├── Type-specifier
+│   │   │   │   └── (KEYWORD, int)
+│   │   │   ├── #saveinp
+│   │   │   └── (ID, foo)
+│   │   └── Declaration-prime
+│   │       └── Fun-declaration-prime
+│   │           ├── #special_save
+│   │           ├── #start_symbol
+│   │           ├── (SYMBOL, ()
+│   │           ├── Params
+│   │           │   ├── (KEYWORD, int)
+│   │           │   ├── #saveinp
+│   │           │   ├── (ID, x)
+│   │           │   ├── #setvar
+│   │           │   ├── Param-prime
+│   │           │   │   └── epsilon
+│   │           │   └── Param-list
+│   │           │       └── epsilon
+│   │           ├── (SYMBOL, ))
+│   │           ├── #label
+│   │           ├── #init_variable
+│   │           ├── #init_variable
+│   │           ├── #startreturn
+│   │           ├── Compound-stmt
+│   │           │   ├── (SYMBOL, {)
+│   │           │   ├── #startscope
+│   │           │   ├── Declaration-list
+│   │           │   │   └── epsilon
+│   │           │   ├── Statement-list
+│   │           │   │   ├── Statement
+│   │           │   │   │   └── Selection-stmt
+│   │           │   │   │       ├── (KEYWORD, if)
+│   │           │   │   │       ├── (SYMBOL, ()
+│   │           │   │   │       ├── Expression
+│   │           │   │   │       │   ├── #pid
+│   │           │   │   │       │   ├── (ID, x)
+│   │           │   │   │       │   └── B
+│   │           │   │   │       │       └── Simple-expression-prime
+│   │           │   │   │       │           ├── Additive-expression-prime
+│   │           │   │   │       │           │   ├── Term-prime
+│   │           │   │   │       │           │   │   ├── Factor-prime
+│   │           │   │   │       │           │   │   │   └── epsilon
+│   │           │   │   │       │           │   │   └── G
+│   │           │   │   │       │           │   │       └── epsilon
+│   │           │   │   │       │           │   └── D
+│   │           │   │   │       │           │       └── epsilon
+│   │           │   │   │       │           └── C
+│   │           │   │   │       │               ├── #saveinp
+│   │           │   │   │       │               ├── Relop
+│   │           │   │   │       │               │   └── (SYMBOL, <)
+│   │           │   │   │       │               ├── Additive-expression
+│   │           │   │   │       │               │   ├── Term
+│   │           │   │   │       │               │   │   ├── Factor
+│   │           │   │   │       │               │   │   │   ├── #pnum
+│   │           │   │   │       │               │   │   │   └── (NUM, 0)
+│   │           │   │   │       │               │   │   └── G
+│   │           │   │   │       │               │   │       └── epsilon
+│   │           │   │   │       │               │   └── D
+│   │           │   │   │       │               │       └── epsilon
+│   │           │   │   │       │               └── #opperation
+│   │           │   │   │       ├── (SYMBOL, ))
+│   │           │   │   │       ├── #save
+│   │           │   │   │       ├── Statement
+│   │           │   │   │       │   └── Compound-stmt
+│   │           │   │   │       │       ├── (SYMBOL, {)
+│   │           │   │   │       │       ├── #startscope
+│   │           │   │   │       │       ├── Declaration-list
+│   │           │   │   │       │       │   └── epsilon
+│   │           │   │   │       │       ├── Statement-list
+│   │           │   │   │       │       │   ├── Statement
+│   │           │   │   │       │       │   │   └── Expression-stmt
+│   │           │   │   │       │       │   │       ├── Expression
+│   │           │   │   │       │       │   │       │   ├── #pid
+│   │           │   │   │       │       │   │       │   ├── (ID, output)
+│   │           │   │   │       │       │   │       │   └── B
+│   │           │   │   │       │       │   │       │       └── Simple-expression-prime
+│   │           │   │   │       │       │   │       │           ├── Additive-expression-prime
+│   │           │   │   │       │       │   │       │           │   ├── Term-prime
+│   │           │   │   │       │       │   │       │           │   │   ├── Factor-prime
+│   │           │   │   │       │       │   │       │           │   │   │   ├── (SYMBOL, ()
+│   │           │   │   │       │       │   │       │           │   │   │   ├── Args
+│   │           │   │   │       │       │   │       │           │   │   │   │   └── Arg-list
+│   │           │   │   │       │       │   │       │           │   │   │   │       ├── Expression
+│   │           │   │   │       │       │   │       │           │   │   │   │       │   ├── #pid
+│   │           │   │   │       │       │   │       │           │   │   │   │       │   ├── (ID, x)
+│   │           │   │   │       │       │   │       │           │   │   │   │       │   └── B
+│   │           │   │   │       │       │   │       │           │   │   │   │       │       └── Simple-expression-prime
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           ├── Additive-expression-prime
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   ├── Term-prime
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   │   ├── Factor-prime
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   │   │   └── epsilon
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   │   └── G
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   │       └── epsilon
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │   └── D
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           │       └── epsilon
+│   │           │   │   │       │       │   │       │           │   │   │   │       │           └── C
+│   │           │   │   │       │       │   │       │           │   │   │   │       │               └── epsilon
+│   │           │   │   │       │       │   │       │           │   │   │   │       └── Arg-list-prime
+│   │           │   │   │       │       │   │       │           │   │   │   │           └── epsilon
+│   │           │   │   │       │       │   │       │           │   │   │   ├── #output_in
+│   │           │   │   │       │       │   │       │           │   │   │   ├── (SYMBOL, ))
+│   │           │   │   │       │       │   │       │           │   │   │   └── #call_function
+│   │           │   │   │       │       │   │       │           │   │   └── G
+│   │           │   │   │       │       │   │       │           │   │       └── epsilon
+│   │           │   │   │       │       │   │       │           │   └── D
+│   │           │   │   │       │       │   │       │           │       └── epsilon
+│   │           │   │   │       │       │   │       │           └── C
+│   │           │   │   │       │       │   │       │               └── epsilon
+│   │           │   │   │       │       │   │       ├── (SYMBOL, ;)
+│   │           │   │   │       │       │   │       └── #pop
+│   │           │   │   │       │       │   └── Statement-list
+│   │           │   │   │       │       │       ├── Statement
+│   │           │   │   │       │       │       │   └── Return-stmt
+│   │           │   │   │       │       │       │       ├── (KEYWORD, return)
+│   │           │   │   │       │       │       │       ├── Return-stmt-prime
+│   │           │   │   │       │       │       │       │   ├── Expression
+│   │           │   │   │       │       │       │       │   │   └── Simple-expression-zegond
+│   │           │   │   │       │       │       │       │   │       ├── Additive-expression-zegond
+│   │           │   │   │       │       │       │       │   │       │   ├── Term-zegond
+│   │           │   │   │       │       │       │       │   │       │   │   ├── Factor-zegond
+│   │           │   │   │       │       │       │       │   │       │   │   │   ├── #pnum
+│   │           │   │   │       │       │       │       │   │       │   │   │   └── (NUM, 1)
+│   │           │   │   │       │       │       │       │   │       │   │   └── G
+│   │           │   │   │       │       │       │       │   │       │   │       └── epsilon
+│   │           │   │   │       │       │       │       │   │       │   └── D
+│   │           │   │   │       │       │       │       │   │       │       └── epsilon
+│   │           │   │   │       │       │       │       │   │       └── C
+│   │           │   │   │       │       │       │       │   │           └── epsilon
+│   │           │   │   │       │       │       │       │   └── (SYMBOL, ;)
+│   │           │   │   │       │       │       │       └── #return
+│   │           │   │   │       │       │       └── Statement-list
+│   │           │   │   │       │       │           └── epsilon
+│   │           │   │   │       │       ├── #endscope
+│   │           │   │   │       │       └── (SYMBOL, })
+│   │           │   │   │       └── Else-stmt
+│   │           │   │   │           ├── (KEYWORD, else)
+│   │           │   │   │           ├── #jpf_save
+│   │           │   │   │           ├── Statement
+│   │           │   │   │           │   └── Compound-stmt
+│   │           │   │   │           │       ├── (SYMBOL, {)
+│   │           │   │   │           │       ├── #startscope
+│   │           │   │   │           │       ├── Declaration-list
+│   │           │   │   │           │       │   └── epsilon
+│   │           │   │   │           │       ├── Statement-list
+│   │           │   │   │           │       │   ├── Statement
+│   │           │   │   │           │       │   │   └── Expression-stmt
+│   │           │   │   │           │       │   │       ├── Expression
+│   │           │   │   │           │       │   │       │   ├── #pid
+│   │           │   │   │           │       │   │       │   ├── (ID, output)
+│   │           │   │   │           │       │   │       │   └── B
+│   │           │   │   │           │       │   │       │       └── Simple-expression-prime
+│   │           │   │   │           │       │   │       │           ├── Additive-expression-prime
+│   │           │   │   │           │       │   │       │           │   ├── Term-prime
+│   │           │   │   │           │       │   │       │           │   │   ├── Factor-prime
+│   │           │   │   │           │       │   │       │           │   │   │   ├── (SYMBOL, ()
+│   │           │   │   │           │       │   │       │           │   │   │   ├── Args
+│   │           │   │   │           │       │   │       │           │   │   │   │   └── Arg-list
+│   │           │   │   │           │       │   │       │           │   │   │   │       ├── Expression
+│   │           │   │   │           │       │   │       │           │   │   │   │       │   ├── #pid
+│   │           │   │   │           │       │   │       │           │   │   │   │       │   ├── (ID, x)
+│   │           │   │   │           │       │   │       │           │   │   │   │       │   └── B
+│   │           │   │   │           │       │   │       │           │   │   │   │       │       └── Simple-expression-prime
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           ├── Additive-expression-prime
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   ├── Term-prime
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   │   ├── Factor-prime
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   │   │   └── epsilon
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   │   └── G
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   │       └── epsilon
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │   └── D
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           │       └── epsilon
+│   │           │   │   │           │       │   │       │           │   │   │   │       │           └── C
+│   │           │   │   │           │       │   │       │           │   │   │   │       │               └── epsilon
+│   │           │   │   │           │       │   │       │           │   │   │   │       └── Arg-list-prime
+│   │           │   │   │           │       │   │       │           │   │   │   │           └── epsilon
+│   │           │   │   │           │       │   │       │           │   │   │   ├── #output_in
+│   │           │   │   │           │       │   │       │           │   │   │   ├── (SYMBOL, ))
+│   │           │   │   │           │       │   │       │           │   │   │   └── #call_function
+│   │           │   │   │           │       │   │       │           │   │   └── G
+│   │           │   │   │           │       │   │       │           │   │       └── epsilon
+│   │           │   │   │           │       │   │       │           │   └── D
+│   │           │   │   │           │       │   │       │           │       └── epsilon
+│   │           │   │   │           │       │   │       │           └── C
+│   │           │   │   │           │       │   │       │               └── epsilon
+│   │           │   │   │           │       │   │       ├── (SYMBOL, ;)
+│   │           │   │   │           │       │   │       └── #pop
+│   │           │   │   │           │       │   └── Statement-list
+│   │           │   │   │           │       │       ├── Statement
+│   │           │   │   │           │       │       │   └── Return-stmt
+│   │           │   │   │           │       │       │       ├── (KEYWORD, return)
+│   │           │   │   │           │       │       │       ├── Return-stmt-prime
+│   │           │   │   │           │       │       │       │   ├── Expression
+│   │           │   │   │           │       │       │       │   │   ├── #pid
+│   │           │   │   │           │       │       │       │   │   ├── (ID, x)
+│   │           │   │   │           │       │       │       │   │   └── B
+│   │           │   │   │           │       │       │       │   │       └── Simple-expression-prime
+│   │           │   │   │           │       │       │       │   │           ├── Additive-expression-prime
+│   │           │   │   │           │       │       │       │   │           │   ├── Term-prime
+│   │           │   │   │           │       │       │       │   │           │   │   ├── Factor-prime
+│   │           │   │   │           │       │       │       │   │           │   │   │   └── epsilon
+│   │           │   │   │           │       │       │       │   │           │   │   └── G
+│   │           │   │   │           │       │       │       │   │           │   │       └── epsilon
+│   │           │   │   │           │       │       │       │   │           │   └── D
+│   │           │   │   │           │       │       │       │   │           │       ├── #saveinp
+│   │           │   │   │           │       │       │       │   │           │       ├── Addop
+│   │           │   │   │           │       │       │       │   │           │       │   └── (SYMBOL, +)
+│   │           │   │   │           │       │       │       │   │           │       ├── Term
+│   │           │   │   │           │       │       │       │   │           │       │   ├── Factor
+│   │           │   │   │           │       │       │       │   │           │       │   │   ├── #pnum
+│   │           │   │   │           │       │       │       │   │           │       │   │   └── (NUM, 2)
+│   │           │   │   │           │       │       │       │   │           │       │   └── G
+│   │           │   │   │           │       │       │       │   │           │       │       └── epsilon
+│   │           │   │   │           │       │       │       │   │           │       ├── #opperation
+│   │           │   │   │           │       │       │       │   │           │       └── D
+│   │           │   │   │           │       │       │       │   │           │           └── epsilon
+│   │           │   │   │           │       │       │       │   │           └── C
+│   │           │   │   │           │       │       │       │   │               └── epsilon
+│   │           │   │   │           │       │       │       │   └── (SYMBOL, ;)
+│   │           │   │   │           │       │       │       └── #return
+│   │           │   │   │           │       │       └── Statement-list
+│   │           │   │   │           │       │           └── epsilon
+│   │           │   │   │           │       ├── #endscope
+│   │           │   │   │           │       └── (SYMBOL, })
+│   │           │   │   │           ├── (KEYWORD, endif)
+│   │           │   │   │           └── #jp
+│   │           │   │   └── Statement-list
+│   │           │   │       └── epsilon
+│   │           │   ├── #endscope
+│   │           │   └── (SYMBOL, })
+│   │           ├── #endreturn
+│   │           ├── #return_address
+│   │           ├── #add_function_to_symbol_table
+│   │           └── #special_save_pair
+│   └── Declaration-list
+│       ├── Declaration
+│       │   ├── Declaration-initial
+│       │   │   ├── Type-specifier
+│       │   │   │   └── (KEYWORD, void)
+│       │   │   ├── #saveinp
+│       │   │   └── (ID, main)
+│       │   └── Declaration-prime
+│       │       └── Fun-declaration-prime
+│       │           ├── #special_save
+│       │           ├── #start_symbol
+│       │           ├── (SYMBOL, ()
+│       │           ├── Params
+│       │           │   └── (KEYWORD, void)
+│       │           ├── (SYMBOL, ))
+│       │           ├── #label
+│       │           ├── #init_variable
+│       │           ├── #init_variable
+│       │           ├── #startreturn
+│       │           ├── Compound-stmt
+│       │           │   ├── (SYMBOL, {)
+│       │           │   ├── #startscope
+│       │           │   ├── Declaration-list
+│       │           │   │   ├── Declaration
+│       │           │   │   │   ├── Declaration-initial
+│       │           │   │   │   │   ├── Type-specifier
+│       │           │   │   │   │   │   └── (KEYWORD, int)
+│       │           │   │   │   │   ├── #saveinp
+│       │           │   │   │   │   └── (ID, i)
+│       │           │   │   │   └── Declaration-prime
+│       │           │   │   │       └── Var-declaration-prime
+│       │           │   │   │           ├── (SYMBOL, ;)
+│       │           │   │   │           └── #setvar
+│       │           │   │   └── Declaration-list
+│       │           │   │       └── epsilon
+│       │           │   ├── Statement-list
+│       │           │   │   ├── Statement
+│       │           │   │   │   └── Expression-stmt
+│       │           │   │   │       ├── Expression
+│       │           │   │   │       │   ├── #pid
+│       │           │   │   │       │   ├── (ID, i)
+│       │           │   │   │       │   └── B
+│       │           │   │   │       │       ├── (SYMBOL, =)
+│       │           │   │   │       │       ├── Expression
+│       │           │   │   │       │       │   ├── #pid
+│       │           │   │   │       │       │   ├── (ID, foo)
+│       │           │   │   │       │       │   └── B
+│       │           │   │   │       │       │       └── Simple-expression-prime
+│       │           │   │   │       │       │           ├── Additive-expression-prime
+│       │           │   │   │       │       │           │   ├── Term-prime
+│       │           │   │   │       │       │           │   │   ├── Factor-prime
+│       │           │   │   │       │       │           │   │   │   ├── (SYMBOL, ()
+│       │           │   │   │       │       │           │   │   │   ├── Args
+│       │           │   │   │       │       │           │   │   │   │   └── Arg-list
+│       │           │   │   │       │       │           │   │   │   │       ├── Expression
+│       │           │   │   │       │       │           │   │   │   │       │   └── Simple-expression-zegond
+│       │           │   │   │       │       │           │   │   │   │       │       ├── Additive-expression-zegond
+│       │           │   │   │       │       │           │   │   │   │       │       │   ├── Term-zegond
+│       │           │   │   │       │       │           │   │   │   │       │       │   │   ├── Factor-zegond
+│       │           │   │   │       │       │           │   │   │   │       │       │   │   │   ├── #pnum
+│       │           │   │   │       │       │           │   │   │   │       │       │   │   │   └── (NUM, 0)
+│       │           │   │   │       │       │           │   │   │   │       │       │   │   └── G
+│       │           │   │   │       │       │           │   │   │   │       │       │   │       └── epsilon
+│       │           │   │   │       │       │           │   │   │   │       │       │   └── D
+│       │           │   │   │       │       │           │   │   │   │       │       │       └── epsilon
+│       │           │   │   │       │       │           │   │   │   │       │       └── C
+│       │           │   │   │       │       │           │   │   │   │       │           └── epsilon
+│       │           │   │   │       │       │           │   │   │   │       └── Arg-list-prime
+│       │           │   │   │       │       │           │   │   │   │           └── epsilon
+│       │           │   │   │       │       │           │   │   │   ├── #output_in
+│       │           │   │   │       │       │           │   │   │   ├── (SYMBOL, ))
+│       │           │   │   │       │       │           │   │   │   └── #call_function
+│       │           │   │   │       │       │           │   │   └── G
+│       │           │   │   │       │       │           │   │       └── epsilon
+│       │           │   │   │       │       │           │   └── D
+│       │           │   │   │       │       │           │       └── epsilon
+│       │           │   │   │       │       │           └── C
+│       │           │   │   │       │       │               └── epsilon
+│       │           │   │   │       │       └── #assign
+│       │           │   │   │       ├── (SYMBOL, ;)
+│       │           │   │   │       └── #pop
+│       │           │   │   └── Statement-list
+│       │           │   │       ├── Statement
+│       │           │   │       │   └── Expression-stmt
+│       │           │   │       │       ├── Expression
+│       │           │   │       │       │   ├── #pid
+│       │           │   │       │       │   ├── (ID, output)
+│       │           │   │       │       │   └── B
+│       │           │   │       │       │       └── Simple-expression-prime
+│       │           │   │       │       │           ├── Additive-expression-prime
+│       │           │   │       │       │           │   ├── Term-prime
+│       │           │   │       │       │           │   │   ├── Factor-prime
+│       │           │   │       │       │           │   │   │   ├── (SYMBOL, ()
+│       │           │   │       │       │           │   │   │   ├── Args
+│       │           │   │       │       │           │   │   │   │   └── Arg-list
+│       │           │   │       │       │           │   │   │   │       ├── Expression
+│       │           │   │       │       │           │   │   │   │       │   ├── #pid
+│       │           │   │       │       │           │   │   │   │       │   ├── (ID, i)
+│       │           │   │       │       │           │   │   │   │       │   └── B
+│       │           │   │       │       │           │   │   │   │       │       └── Simple-expression-prime
+│       │           │   │       │       │           │   │   │   │       │           ├── Additive-expression-prime
+│       │           │   │       │       │           │   │   │   │       │           │   ├── Term-prime
+│       │           │   │       │       │           │   │   │   │       │           │   │   ├── Factor-prime
+│       │           │   │       │       │           │   │   │   │       │           │   │   │   └── epsilon
+│       │           │   │       │       │           │   │   │   │       │           │   │   └── G
+│       │           │   │       │       │           │   │   │   │       │           │   │       └── epsilon
+│       │           │   │       │       │           │   │   │   │       │           │   └── D
+│       │           │   │       │       │           │   │   │   │       │           │       └── epsilon
+│       │           │   │       │       │           │   │   │   │       │           └── C
+│       │           │   │       │       │           │   │   │   │       │               └── epsilon
+│       │           │   │       │       │           │   │   │   │       └── Arg-list-prime
+│       │           │   │       │       │           │   │   │   │           └── epsilon
+│       │           │   │       │       │           │   │   │   ├── #output_in
+│       │           │   │       │       │           │   │   │   ├── (SYMBOL, ))
+│       │           │   │       │       │           │   │   │   └── #call_function
+│       │           │   │       │       │           │   │   └── G
+│       │           │   │       │       │           │   │       └── epsilon
+│       │           │   │       │       │           │   └── D
+│       │           │   │       │       │           │       └── epsilon
+│       │           │   │       │       │           └── C
+│       │           │   │       │       │               └── epsilon
+│       │           │   │       │       ├── (SYMBOL, ;)
+│       │           │   │       │       └── #pop
+│       │           │   │       └── Statement-list
+│       │           │   │           ├── Statement
+│       │           │   │           │   └── Expression-stmt
+│       │           │   │           │       ├── Expression
+│       │           │   │           │       │   ├── #pid
+│       │           │   │           │       │   ├── (ID, i)
+│       │           │   │           │       │   └── B
+│       │           │   │           │       │       ├── (SYMBOL, =)
+│       │           │   │           │       │       ├── Expression
+│       │           │   │           │       │       │   ├── #pid
+│       │           │   │           │       │       │   ├── (ID, foo)
+│       │           │   │           │       │       │   └── B
+│       │           │   │           │       │       │       └── Simple-expression-prime
+│       │           │   │           │       │       │           ├── Additive-expression-prime
+│       │           │   │           │       │       │           │   ├── Term-prime
+│       │           │   │           │       │       │           │   │   ├── Factor-prime
+│       │           │   │           │       │       │           │   │   │   ├── (SYMBOL, ()
+│       │           │   │           │       │       │           │   │   │   ├── Args
+│       │           │   │           │       │       │           │   │   │   │   └── Arg-list
+│       │           │   │           │       │       │           │   │   │   │       ├── Expression
+│       │           │   │           │       │       │           │   │   │   │       │   └── Simple-expression-zegond
+│       │           │   │           │       │       │           │   │   │   │       │       ├── Additive-expression-zegond
+│       │           │   │           │       │       │           │   │   │   │       │       │   ├── Term-zegond
+│       │           │   │           │       │       │           │   │   │   │       │       │   │   ├── Factor-zegond
+│       │           │   │           │       │       │           │   │   │   │       │       │   │   │   ├── #pnum
+│       │           │   │           │       │       │           │   │   │   │       │       │   │   │   └── (NUM, 10)
+│       │           │   │           │       │       │           │   │   │   │       │       │   │   └── G
+│       │           │   │           │       │       │           │   │   │   │       │       │   │       └── epsilon
+│       │           │   │           │       │       │           │   │   │   │       │       │   └── D
+│       │           │   │           │       │       │           │   │   │   │       │       │       └── epsilon
+│       │           │   │           │       │       │           │   │   │   │       │       └── C
+│       │           │   │           │       │       │           │   │   │   │       │           └── epsilon
+│       │           │   │           │       │       │           │   │   │   │       └── Arg-list-prime
+│       │           │   │           │       │       │           │   │   │   │           └── epsilon
+│       │           │   │           │       │       │           │   │   │   ├── #output_in
+│       │           │   │           │       │       │           │   │   │   ├── (SYMBOL, ))
+│       │           │   │           │       │       │           │   │   │   └── #call_function
+│       │           │   │           │       │       │           │   │   └── G
+│       │           │   │           │       │       │           │   │       └── epsilon
+│       │           │   │           │       │       │           │   └── D
+│       │           │   │           │       │       │           │       └── epsilon
+│       │           │   │           │       │       │           └── C
+│       │           │   │           │       │       │               └── epsilon
+│       │           │   │           │       │       └── #assign
+│       │           │   │           │       ├── (SYMBOL, ;)
+│       │           │   │           │       └── #pop
+│       │           │   │           └── Statement-list
+│       │           │   │               ├── Statement
+│       │           │   │               │   └── Expression-stmt
+│       │           │   │               │       ├── Expression
+│       │           │   │               │       │   ├── #pid
+│       │           │   │               │       │   ├── (ID, output)
+│       │           │   │               │       │   └── B
+│       │           │   │               │       │       └── Simple-expression-prime
+│       │           │   │               │       │           ├── Additive-expression-prime
+│       │           │   │               │       │           │   ├── Term-prime
+│       │           │   │               │       │           │   │   ├── Factor-prime
+│       │           │   │               │       │           │   │   │   ├── (SYMBOL, ()
+│       │           │   │               │       │           │   │   │   ├── Args
+│       │           │   │               │       │           │   │   │   │   └── Arg-list
+│       │           │   │               │       │           │   │   │   │       ├── Expression
+│       │           │   │               │       │           │   │   │   │       │   ├── #pid
+│       │           │   │               │       │           │   │   │   │       │   ├── (ID, i)
+│       │           │   │               │       │           │   │   │   │       │   └── B
+│       │           │   │               │       │           │   │   │   │       │       └── Simple-expression-prime
+│       │           │   │               │       │           │   │   │   │       │           ├── Additive-expression-prime
+│       │           │   │               │       │           │   │   │   │       │           │   ├── Term-prime
+│       │           │   │               │       │           │   │   │   │       │           │   │   ├── Factor-prime
+│       │           │   │               │       │           │   │   │   │       │           │   │   │   └── epsilon
+│       │           │   │               │       │           │   │   │   │       │           │   │   └── G
+│       │           │   │               │       │           │   │   │   │       │           │   │       └── epsilon
+│       │           │   │               │       │           │   │   │   │       │           │   └── D
+│       │           │   │               │       │           │   │   │   │       │           │       └── epsilon
+│       │           │   │               │       │           │   │   │   │       │           └── C
+│       │           │   │               │       │           │   │   │   │       │               └── epsilon
+│       │           │   │               │       │           │   │   │   │       └── Arg-list-prime
+│       │           │   │               │       │           │   │   │   │           └── epsilon
+│       │           │   │               │       │           │   │   │   ├── #output_in
+│       │           │   │               │       │           │   │   │   ├── (SYMBOL, ))
+│       │           │   │               │       │           │   │   │   └── #call_function
+│       │           │   │               │       │           │   │   └── G
+│       │           │   │               │       │           │   │       └── epsilon
+│       │           │   │               │       │           │   └── D
+│       │           │   │               │       │           │       └── epsilon
+│       │           │   │               │       │           └── C
+│       │           │   │               │       │               └── epsilon
+│       │           │   │               │       ├── (SYMBOL, ;)
+│       │           │   │               │       └── #pop
+│       │           │   │               └── Statement-list
+│       │           │   │                   └── epsilon
+│       │           │   ├── #endscope
+│       │           │   └── (SYMBOL, })
+│       │           ├── #endreturn
+│       │           ├── #return_address
+│       │           ├── #add_function_to_symbol_table
+│       │           └── #special_save_pair
+│       └── Declaration-list
+│           └── epsilon
+├── #endscope
+└── $
