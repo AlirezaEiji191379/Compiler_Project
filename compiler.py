@@ -4,10 +4,10 @@ from Scanner.LexicalError import LexicalError
 from Scanner.Token import Token
 from Scanner.scanner import Scanners
 import re
-import operator
 from anytree import Node, RenderTree
-from code_gen import codeGenerator, create_outputs
+from code_gen import CodeGenerator
 
+codegen = CodeGenerator()
 f = open("input.txt", "r")
 inputFile = f.read() + " "
 scanner = Scanners(inputFile)
@@ -201,7 +201,7 @@ def go_through_path(selected_path, parent_node):
 
         print('edge is:', edge, '   current token is:', current_token.value)
         if edge[0] == '#':
-            codeGenerator(edge, current_token)
+            codegen.codeGenerator(edge, current_token)
         elif(edge in terminals_set):
 
             if edge == 'EPSILON':
@@ -278,7 +278,7 @@ if __name__ == '__main__':
     create_diagrams()
     run_a_diagram(root)
     draw_tree(root)
-    create_outputs()
+    codegen.create_outputs()
     write_errors()
     parse_tree.close()
     errors.close()

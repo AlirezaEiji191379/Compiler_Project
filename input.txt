@@ -1,19 +1,21 @@
-/*==== Sample T4 ====*/
-int a;
-int b;
+/*  ==== Sample 8  ====*/
+int arr[10];
+int var1;
+
+void func(int arg) {
+	var1 = 2;
+	arr[2] = arg;
+}
 
 void main(void) {
-    int c;
-    int d;
-    a = c = 1;
-    d = b = 3;
-    output(a);
-    output(b);
-    c = a * 17 < 15 + 3;
-    output(c);
-    output(d < 3);
-    output(d - 8 < 3);
-    output(1 * 2);
+     var1 = 0;
+     arr[0] = 10;
+     arr[2] = 100;
+     arr[6] = 3;
+     arr[9] = 5;
+     func(25);
+     output(arr[var1]);
+     output(1234);                                                                                       
+     output(arr[arr[arr[arr[0] - 1] + 1] - 1]);
+} 
 
-
-}
