@@ -308,21 +308,21 @@ def call_function():
         if isinstance(sematic_stack[j], list):
             function_attributes = sematic_stack[j]
     input_size = len(function_attributes) - 3
-    # assign function inputs
+
     for j in range(input_size):
-        addToProgramBlock(
-            state, 'ASSIGN', sematic_stack[len(sematic_stack) - input_size + j], function_attributes[j + 1])
+        addToProgramBlock(state, 'ASSIGN', sematic_stack[len(
+            sematic_stack) - input_size + j], function_attributes[j + 1])
         state = state + 1
-    # assign return address
+
     addToProgramBlock(
         state, 'ASSIGN', f'#{state + 2}', function_attributes[input_size + 1])
     state = state + 1
-    # go  to function
+
     addToProgramBlock(state, 'JP', function_attributes[0] + 1)
     state = state + 1
     for j in range(input_size + 1):
         sematic_stack.pop()
-    # create a new variable and assign function output to it
+
     address = getTempVar()
     sematic_stack.append(address)
     addToProgramBlock(
