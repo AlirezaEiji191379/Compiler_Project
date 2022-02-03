@@ -271,14 +271,12 @@ class CodeGenerator:
         self.state = self.state + 1
 
     def special_value(self):
-        global state, program_block, sematic_stack, breaks, returns
         top = self.sematic_stack.pop()
         self.sematic_stack.append(self.state)
         self.sematic_stack.append(top)
         self.state += 1
 
     def special_save_pair(self):
-        global state, program_block, sematic_stack, breaks, returns, symbol_table
         if self.symbol_table[len(self.symbol_table) - 1][0] == 'main':
             t = self.getTempVar()
             self.addToProgramBlock(
