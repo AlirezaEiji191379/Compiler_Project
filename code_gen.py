@@ -3,7 +3,7 @@ from Scanner.Token import Token
 
 class CodeGenerator:
 
-    lastTempAddress = 100
+    lastTempAddress = 500
     symbol_table = []
     scope_stack = []
     sematic_stack = []
