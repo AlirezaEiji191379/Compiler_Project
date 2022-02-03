@@ -1,23 +1,23 @@
-Program -> #startscope Declaration-list #endscope $
+Program -> #startBlock Declaration-list #endBlock $
 Declaration-list -> Declaration Declaration-list
 Declaration-list -> EPSILON
 Declaration -> Declaration-initial Declaration-prime
-Declaration-initial -> Type-specifier #saveinp ID
+Declaration-initial -> Type-specifier #savein ID
 Declaration-prime -> Fun-declaration-prime
 Declaration-prime -> Var-declaration-prime
 Var-declaration-prime -> ; #setvar
 Var-declaration-prime -> [ #pnum NUM ] ; #setarr
-Fun-declaration-prime -> #special_save #start_symbol ( Params ) #label #init_variable #init_variable #startreturn Compound-stmt #endreturn #return_address #add_function_to_symbol_table #special_save_pair
+Fun-declaration-prime -> #function_save #start_symbol ( Params ) #label #init_variable #init_variable #startreturn Compound-stmt #endreturn #return_address #add_symbol_table #special_save
 Type-specifier -> int
 Type-specifier -> void
-Params -> int #saveinp ID #setvar Param-prime Param-list
+Params -> int #savein ID #setvar Param-prime Param-list
 Params -> void
 Param-list -> , Param #setvar Param-list
 Param-list -> EPSILON
 Param -> Declaration-initial Param-prime
 Param-prime -> [ ]
 Param-prime -> EPSILON
-Compound-stmt -> { #startscope Declaration-list Statement-list #endscope }
+Compound-stmt -> { #startBlock Declaration-list Statement-list #endBlock }
 Statement-list -> Statement Statement-list
 Statement-list -> EPSILON
 Statement -> Expression-stmt
@@ -38,20 +38,20 @@ Return-stmt-prime -> Expression ;
 Expression -> Simple-expression-zegond
 Expression -> #pid ID B
 B -> = Expression #assign
-B -> [ Expression ] #index H
+B -> [ Expression ] #indexing H
 B -> Simple-expression-prime
 H -> = Expression #assign
 H -> G D C
 Simple-expression-zegond -> Additive-expression-zegond C
 Simple-expression-prime -> Additive-expression-prime C
-C -> #saveinp Relop Additive-expression #opperation
+C -> #savein Relop Additive-expression #opperation
 C -> EPSILON
 Relop -> <
 Relop -> ==
 Additive-expression -> Term D
 Additive-expression-prime -> Term-prime D
 Additive-expression-zegond -> Term-zegond D
-D -> #saveinp Addop Term #opperation D
+D -> #savein Addop Term #opperation D
 D -> EPSILON
 Addop -> +
 Addop -> -
@@ -63,11 +63,11 @@ G -> EPSILON
 Factor -> ( Expression )
 Factor -> #pid ID Var-call-prime
 Factor -> #pnum NUM
-Var-call-prime -> ( Args #output_in ) #call_function
+Var-call-prime -> ( Args #output ) #call
 Var-call-prime -> Var-prime
-Var-prime -> [ Expression ] #index
+Var-prime -> [ Expression ] #indexing
 Var-prime -> EPSILON
-Factor-prime -> ( Args #output_in ) #call_function
+Factor-prime -> ( Args #output ) #call
 Factor-prime -> EPSILON
 Factor-zegond -> ( Expression )
 Factor-zegond -> #pnum NUM

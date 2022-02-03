@@ -304,13 +304,13 @@ class CodeGenerator:
         elif actionSymbol == '#assign':
             self.assign()
 
-        elif actionSymbol == '#index':
+        elif actionSymbol == '#indexing':
             self.index()
 
         elif actionSymbol == '#pop':
             self.pop()
 
-        elif actionSymbol == '#saveinp':
+        elif actionSymbol == '#savein':
             self.saveip(current_token)
 
         elif actionSymbol == '#opperation':
@@ -319,7 +319,7 @@ class CodeGenerator:
         elif actionSymbol == '#signed':
             self.signed()
 
-        elif actionSymbol == '#output_in':
+        elif actionSymbol == '#output':
             self.outputIn()
 
         elif actionSymbol == '#save':
@@ -337,9 +337,6 @@ class CodeGenerator:
         elif actionSymbol == '#label':
             self.lablel()
 
-        elif actionSymbol == '#endbreak':
-            self.endbreak()
-
         elif actionSymbol == '#return':
             self.returnSymbol()
 
@@ -349,13 +346,13 @@ class CodeGenerator:
         elif actionSymbol == '#endreturn':
             self.end_return()
 
-        elif actionSymbol == '#call_function':
+        elif actionSymbol == '#call':
             self.call_function()
 
-        elif actionSymbol == '#special_save':
+        elif actionSymbol == '#function_save':
             self.special_value()
 
-        elif actionSymbol == '#special_save_pair':
+        elif actionSymbol == '#special_save':
             self.special_save_pair()
 
         elif actionSymbol == '#numeric_label':
@@ -364,16 +361,16 @@ class CodeGenerator:
         elif actionSymbol == '#repeat':
             self.repeat()
 
-        elif actionSymbol == '#startscope':
+        elif actionSymbol == '#startBlock':
             self.start()
 
-        elif actionSymbol == '#endscope':
+        elif actionSymbol == '#endBlock':
             self.end()
 
         elif actionSymbol == '#start_symbol':
             self.startSymbol()
 
-        elif actionSymbol == '#add_function_to_symbol_table':
+        elif actionSymbol == '#add_symbol_table':
             self.add_function_to_symbol_table()
 
         elif actionSymbol == '#init_variable':
@@ -387,3 +384,6 @@ class CodeGenerator:
 
         elif actionSymbol == '#startbreak':
             self.start_break()
+
+        elif actionSymbol == '#endbreak':
+            self.endbreak()
