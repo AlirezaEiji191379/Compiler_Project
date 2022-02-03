@@ -6,7 +6,7 @@ from Scanner.scanner import Scanners
 import re
 import operator
 from anytree import Node, RenderTree
-from code_gen import generate_intermediate_code, save_code_gen
+from code_gen import codeGenerator, create_outputs
 
 f = open("input.txt", "r")
 inputFile = f.read() + " "
@@ -105,7 +105,7 @@ def run_a_diagram(diagram_name):
 
     if selected_path == -1:
         return -1
-    
+
     print(diagram_name.name, ": ",  selected_path)
     go_through_path(selected_path, diagram_name)
     return True
@@ -122,7 +122,7 @@ def select_best_path(diagram_name):
 
         for edge in path:
             if(edge[0] == '#'):
-                    continue
+                continue
             else:
                 first_edge_in_path = edge
                 break
@@ -200,8 +200,8 @@ def go_through_path(selected_path, parent_node):
         edge_node = Node(edge, parent=parent_node)
 
         print('edge is:', edge, '   current token is:', current_token.value)
-        if edge[0]=='#':
-            generate_intermediate_code(edge, current_token)
+        if edge[0] == '#':
+            codeGenerator(edge, current_token)
         elif(edge in terminals_set):
 
             if edge == 'EPSILON':
@@ -265,7 +265,7 @@ def write_errors():
             errors.write(e+"\n")
 
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
 
     split_grammar_rules('grammar.txt')
     find_terminals_and_non_terminals()
@@ -278,7 +278,7 @@ if __name__ == '__main__':
     create_diagrams()
     run_a_diagram(root)
     draw_tree(root)
-    save_code_gen()
+    create_outputs()
     write_errors()
     parse_tree.close()
     errors.close()
